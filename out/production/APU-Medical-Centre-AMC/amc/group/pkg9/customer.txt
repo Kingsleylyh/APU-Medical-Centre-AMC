@@ -1,0 +1,2 @@
+CUST001|John Doe|123 Main St|1990-01-01
+CUST002|Jane Smith|456 Oak Ave|1985-05-15

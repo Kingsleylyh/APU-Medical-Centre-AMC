@@ -1,0 +1,138 @@
+package amc.group.pkg9;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Medicine {
+    private String medicineId,medicineName,medicineDescription;
+    private int dosage;
+    private double price;
+    private boolean availability;
+
+    private static final String[] POPULAR_MEDICINES={"Paracetamol 500mg","Ibuprofen 400mg","Amoxicillin 500mg","Cetirizine 10mg","Loratadine 10mg","Ciprofloxacin 500mg","Metformin 500mg","Atorvastatin 20mg","Simvastatin 20mg","Losartan 50mg"};
+    private static final String medicineFile="src/amc/group/pkg9/files/medicine.txt";
+    public Medicine(){}
+
+    public Medicine(String medicineId, String medicineName, String medicineDescription, int dosage, double price, boolean availability) {
+        this.medicineId = medicineId;
+        this.medicineName = medicineName;
+        this.medicineDescription = medicineDescription;
+        this.dosage = dosage;
+        this.price = price;
+        this.availability = availability;
+    }
+
+    public String getMedicineId() {
+        return medicineId;
+    }
+
+    public void setMedicineId(String medicineId) {
+        this.medicineId = medicineId;
+    }
+
+    public String getMedicineName() {
+        return medicineName;
+    }
+
+    public void setMedicineName(String medicineName) {
+        this.medicineName = medicineName;
+    }
+
+    public String getMedicineDescription() {
+        return medicineDescription;
+    }
+
+    public void setMedicineDescription(String medicineDescription) {
+        this.medicineDescription = medicineDescription;
+    }
+
+    public int getDosage() {
+        return dosage;
+    }
+
+    public void setDosage(int dosage) {
+        this.dosage = dosage;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public boolean isAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(boolean availability) {
+        this.availability = availability;
+    }
+
+    public ArrayList<String> loadMedicine(String medicineName) throws Exception {
+        String encoded = URLEncoder.encode(medicineName, "UTF-8");
+        String urlString = "https://rxnav.nlm.nih.gov/REST/drugs.json?name=" + encoded;
+
+        URL url = new URL(urlString);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.connect();
+
+        ArrayList<String> medicineList = new ArrayList<>();
+
+        int responseCode = conn.getResponseCode();
+        if (responseCode != 200) {
+            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+        } else {
+            InputStreamReader in = new InputStreamReader(conn.getInputStream());
+            BufferedReader br = new BufferedReader(in);
+            StringBuilder informationString = new StringBuilder();
+            String line = null;
+
+            while ((line = br.readLine()) != null) {
+                informationString.append(line);
+            }
+            br.close();
+
+            String result = informationString.toString();
+            if (result.contains("\"name\"")) {
+                String[] resultArray = result.split("\"name\":");
+                for (int i = 1; i < resultArray.length; i++) {
+                    try {
+                        String nameArray = resultArray[i].split("\"")[1];
+                        if (!nameArray.isEmpty() && !medicineList.contains(nameArray)) {
+                            medicineList.add(nameArray);
+                        }
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+        if (medicineList.isEmpty()) {
+            for (String medicine : POPULAR_MEDICINES) {
+                if (medicineName.toLowerCase().contains(medicine.toLowerCase())) {
+                    medicineList.add(medicine);
+                }
+            }
+        }
+
+        return medicineList;
+    }
+
+    public static void main(String[] args) {
+        Medicine medicine = new Medicine();
+        try
+            medicine.loadMedicine();
+        for(String medicine : medicineList)
+        System.out.println();
+    }
+}

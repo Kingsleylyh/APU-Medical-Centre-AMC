@@ -1,0 +1,3 @@
+DOC001|John Smith|john.smith@hospital.com|password123|doctor
+DOC002|Sarah Johnson|sarah.johnson@hospital.com|mypass456|doctor
+PAT001|Mary Wilson|mary.wilson@email.com|patient123|patient
