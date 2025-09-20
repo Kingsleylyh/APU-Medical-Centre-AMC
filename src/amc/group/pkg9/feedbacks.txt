@@ -1,0 +1,5 @@
+FB001,C001,STAFF,A001,2025-08-20,Paracetamol,Your lab report is ready.
+FB002,C001,DOCTOR,A001,2025-09-14,,Condition improved.
+FB003,C002,STAFF,A002,2025-09-15,Ibuprofen,Check your blood pressure regularly.
+FB004,C001,DOCTOR,A004,2025-09-10,Ibuprofen,Next visit is on next Monday.
+FB005,C001,DOCTOR,A111,2025-09-10,Holvov,Per tablet three times a day. Your next visit is on next Tuesday.
