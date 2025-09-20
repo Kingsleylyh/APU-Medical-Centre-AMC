@@ -1,0 +1,1 @@
+ITEM001|A001|M003|200 mg|1|Tablet|Tablet|Twice a day|Oral|5|0.30|3.00

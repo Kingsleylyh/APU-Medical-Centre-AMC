@@ -1,0 +1,277 @@
+package amc.group.pkg9;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.json.simple.*;
+import org.json.simple.parser.*;
+
+public class Medicine {
+    private String name;
+    private double price;
+
+    private static final String[] POPULAR_MEDICINES={"Paracetamol 500mg","Ibuprofen 400mg","Amoxicillin 500mg","Cetirizine 10mg","Loratadine 10mg","Ciprofloxacin 500mg","Metformin 500mg","Atorvastatin 20mg","Simvastatin 20mg","Losartan 50mg"};
+    private static final String medicineFile="src/amc/group/pkg9/files/medicine.txt";
+
+    private static String[] drugForm={"oral tablet", "oral capsule", "oral solution", "oral suspension",
+            "extended release oral tablet", "chewable tablet", "injection",
+            "rectal suppository", "oral powder", "oral film", "sublingual tablet",
+            "buccal tablet", "transdermal patch", "topical cream", "topical gel",
+            "nasal spray", "eye drops", "ear drops", "oral syrup", "oral liquid",
+            "intravenous", "intramuscular", "subcutaneous", "topical ointment",
+            "vaginal tablet", "vaginal suppository", "oral paste", "oral granules"};
+
+    public Medicine(){}
+
+    public Medicine(String name) {
+        this.name = name;
+        this.price = 0.0;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getPrice(String medicineName) {
+        if (medicineName.contains("Acetaminophen")){
+            price=7.0;
+        }
+        else if(medicineName.contains("Ibuprofen")){
+            price=5.0;
+        }
+        else if(medicineName.contains("Amoxicillin")){
+            price=10.0;
+        }
+        else if(medicineName.contains("Lisinopril")){
+            price=15.0;
+        }
+        else if(medicineName.contains("Atorvastatin")){
+            price=20.0;
+        }
+        else if(medicineName.contains("Metformin")){
+            price=12.0;
+        }
+        else if(medicineName.contains("Aspirin")) {
+            price = 8.0;
+        }
+        else if(medicineName.contains("Omeprazole")){
+            price=18.0;
+        }
+        else if(medicineName.contains("Ciprofloxacin")){
+            price=25.0;
+        }
+        else if(medicineName.contains("Loratadine")){
+            price=6.0;
+        }
+        else if(medicineName.contains("Losartan")){
+            price=14.0;
+        }
+        else if(medicineName.contains("Sertraline")){
+            price=22.0;
+        }
+        else if(medicineName.contains("Gabapentin")){
+            price=16.0;
+        }
+        else if(medicineName.contains("Prednisone")) {
+            price = 11.0;
+        }
+        else if(medicineName.contains("Hydrochlorothiazide")){
+            price=9.0;
+        } else{
+            price=13.5;
+        }
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public static String[] getDrugForm() {
+        return drugForm;
+    }
+
+    public static ArrayList<String> getMedicineName(String medicineName) throws Exception {
+        String encoded=URLEncoder.encode(medicineName,"UTF-8");
+        String urlString = "https://rxnav.nlm.nih.gov/REST/drugs.json?name="+encoded;
+
+        URL url = new URL(urlString);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.connect();
+
+        ArrayList<String> medicineList = new ArrayList<>();
+
+        int responseCode = conn.getResponseCode();
+        if (responseCode != 200) {
+            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+        } else {
+            StringBuilder response = new StringBuilder();
+            Scanner scanner = new Scanner(url.openStream());
+
+            while (scanner.hasNext()) {
+                response.append(scanner.nextLine());
+            }
+
+            JSONParser parser = new JSONParser();
+            JSONObject jsonResponse = (JSONObject) parser.parse(String.valueOf(response));
+
+            JSONObject drugGroup = (JSONObject) jsonResponse.get("drugGroup");
+
+            JSONArray conceptGroups = (JSONArray) drugGroup.get("conceptGroup");
+
+            for (int i = 0; i < conceptGroups.size(); i++) {
+                JSONObject conceptGroup = (JSONObject) conceptGroups.get(i);
+
+                if (conceptGroup.containsKey("conceptProperties")) {
+                    Object propertiesObj = conceptGroup.get("conceptProperties");
+
+                    if (propertiesObj instanceof JSONArray) {
+                        JSONArray concepts = (JSONArray) propertiesObj;
+                        for (int j = 0; j < concepts.size(); j++) {
+                            JSONObject concept = (JSONObject) concepts.get(j);
+                            if (concept.containsKey("name")) {
+                                medicineList.add(String.valueOf(concept.get("name")));
+                            }
+                        }
+                    } else if (propertiesObj instanceof JSONObject) {
+                        JSONObject concept = (JSONObject) propertiesObj;
+                        if (concept.containsKey("name")) {
+                            medicineList.add(String.valueOf(concept.get("name")));
+                        }
+                    }
+                }
+            }
+
+            if (medicineList.isEmpty()) {
+                for (String medicine : POPULAR_MEDICINES) {
+                    if (medicineName.toLowerCase().contains(medicine.toLowerCase())) {
+                        medicineList.add(medicine);
+                    }
+                }
+            }
+        }
+        conn.disconnect();
+        return medicineList;
+    }
+
+    public static Medicine parseResponse(String drugName) throws Exception {
+        if(drugName.contains("{")||drugName.contains("} Pack"))return null;
+
+        String strength="";
+
+        //remove brand name in square brackets
+        drugName=drugName.replaceAll("\\[.*?\\]", "").trim();
+        //remove time in the name
+        drugName=drugName.replaceAll("(?i)\\b(\\d+\\s*HR|24\\s*HR|12\\s*HR|ONCE-DAILY|EXTENDED\\s*RELEASE|DELAYED\\s*RELEASE|MODIFIED|OSMOTIC|DISINTEGRATING|EFFERVESCENT|CHEWING\\s*GUM)\\b", "").trim();
+        //remove words like GRANULES FOR, POWDER FOR, ORAL FILM
+        drugName=drugName.replaceAll("(?i)\\b(GRANULES\\s*FOR|POWDER\\s*FOR|ORAL\\s*FILM)\\b", "").trim();
+        for(String form:drugForm){
+            drugName=drugName.replaceAll("(?i)\\b"+Pattern.quote(form)+"\\b", "").trim();
+        }
+        //remove words after slash
+        if(drugName.contains("/")){
+            drugName=drugName.split("/")[0].trim();
+        }
+        //remove chemical name
+        drugName = drugName.replaceAll("(?i)\\b(HYDROCHLORIDE|BITARTRATE|MALEATE|FUMARATE|POTASSIUM|SODIUM|CITRATE|PHOSPHATE|ENACARBIL|CILEXETIL)\\b", "").trim();
+
+        Pattern strengthPattern=Pattern.compile("(\\d+(?:\\.\\d+)?\\s*(?:MG|mg|ML|ml|G|g|%))");
+        Matcher strengthMatcher=strengthPattern.matcher(drugName);
+
+        if(strengthMatcher.find()){
+            strength=strengthMatcher.group(1);
+            drugName=drugName.replaceAll("(?i)" +Pattern.quote(strengthMatcher.group(1)), "").trim();
+        }
+
+        //remove extra spaces
+        drugName=drugName.replaceAll("\\s+", " ").trim();
+
+        if(!drugName.isEmpty()){
+            drugName=drugName.substring(0,1).toUpperCase()+drugName.substring(1).toLowerCase();
+        } else{
+            return null;
+        }
+
+        if(!strength.isEmpty()){
+            drugName+=" "+strength;
+        } else{
+            return null;
+        }
+
+        return new Medicine(drugName);
+    }
+
+    public static List<Medicine> getCommonMedicine() throws Exception{
+        String[] searchTerms = {
+                "acetaminophen", "ibuprofen", "amoxicillin", "lisinopril", "atorvastatin",
+                "metformin", "aspirin", "omeprazole", "ciprofloxacin", "loratadine", "losartan",
+                "sertraline", "gabapentin", "prednisone", "hydrochlorothiazide"
+        };
+
+        Set<String> uniqueDrugName=new HashSet<>();
+        List<Medicine> uniqueMedicine=new ArrayList<>();
+
+        Arrays.stream (searchTerms).parallel().forEach(term -> {
+            try{
+                ArrayList<String> drugNames=getMedicineName(term);
+                for(String name:drugNames){
+                    Medicine parsedMedicine=parseResponse(name);
+                    if(parsedMedicine!=null){
+                        String medicineKey=parsedMedicine.getName();
+                        synchronized (uniqueDrugName){
+                            if(uniqueDrugName.add(medicineKey)){
+                                uniqueMedicine.add(parsedMedicine);
+                            }
+                        }
+
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        return uniqueMedicine;
+    }
+    @Override
+    public String toString(){
+        return name ;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this==o)return true;
+        if(o==null||getClass()!=o.getClass())return false;
+        Medicine medicine=(Medicine)o;
+        return  Objects.equals(name,medicine.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+    public static void main(String[] args) {
+        try {
+            List<Medicine> medicineList = getCommonMedicine();
+
+            for (int i = 0; i<medicineList.size(); i++) {
+                System.out.println(medicineList.get(i));
+            }
+
+        } catch (Exception e) {
+            System.err.println("An error occurred during data generation:");
+            e.printStackTrace();
+        }
+    }
+}
+

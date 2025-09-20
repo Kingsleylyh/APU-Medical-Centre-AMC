@@ -1,0 +1,20 @@
+M001|Paracetamol
+M002|Amoxicillin
+M003|Ibuprofen
+M004|Insulin
+M005|Omeprazole
+M006|Salbutamol
+M007|Ceftriaxone
+M008|Metformin
+M009|Loratadine
+M010|Vitamin C
+M011|Aspirin
+M012|Azithromycin
+M013|Clarithromycin
+M014|Diclofenac
+M015|Ranitidine
+M016|Prednisolone
+M017|Hydrocortisone
+M018|Furosemide
+M019|Amlodipine
+M020|Atorvastatin

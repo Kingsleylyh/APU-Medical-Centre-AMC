@@ -1,0 +1,34 @@
+MF001|M001|Tablet|Oral
+MF002|M001|Syrup|Oral
+MF003|M001|IV|IV
+MF004|M002|Capsule|Oral
+MF005|M002|Syrup|Oral
+MF006|M003|Tablet|Oral
+MF007|M003|Syrup|Oral
+MF008|M004|Injection|Subcutaneous
+MF009|M005|Capsule|Oral
+MF010|M006|Inhaler|Inhalation
+MF011|M007|IV Injection|IV
+MF012|M007|IM Injection|IM
+MF013|M008|Tablet|Oral
+MF014|M009|Tablet|Oral
+MF015|M009|Syrup|Oral
+MF016|M010|Tablet|Oral
+MF017|M011|Tablet|Oral
+MF018|M012|Tablet|Oral
+MF019|M012|Syrup|Oral
+MF020|M013|Tablet|Oral
+MF021|M013|Syrup|Oral
+MF022|M014|Tablet|Oral
+MF023|M014|IV Injection|IV
+MF024|M014|Gel|Topical
+MF025|M015|Tablet|Oral
+MF026|M015|IV Injection|IV
+MF027|M016|Tablet|Oral
+MF028|M016|Syrup|Oral
+MF029|M017|IV Injection|IV
+MF030|M017|Cream|Topical
+MF031|M018|Tablet|Oral
+MF032|M018|IV Injection|IV
+MF033|M019|Tablet|Oral
+MF034|M020|Tablet|Oral
