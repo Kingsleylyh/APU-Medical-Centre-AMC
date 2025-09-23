@@ -126,7 +126,7 @@ public class DocAppointmentHistory extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(233, 226, 219));
 
-        jButton2.setIcon(new javax.swing.ImageIcon("C:\\Users\\User\\Downloads\\left (1).png")); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/amc/group/pkg9/backIcon.png"))); // NOI18N
         jButton2.setBorder(null);
         jButton2.setBorderPainted(false);
         jButton2.setContentAreaFilled(false);
