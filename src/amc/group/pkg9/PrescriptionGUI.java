@@ -138,8 +138,10 @@ public class PrescriptionGUI extends javax.swing.JFrame {
                 if(appointments.get(i).getAppointmentID().equals(appointmentId)&&
                     appointments.get(i).getStatus().equalsIgnoreCase("Present")){
 
-                    String medicineStatus=prescriptionTable.getMedicineName(appointmentId);
-                    if(!medicineStatus.equalsIgnoreCase("Incomplete")){
+                    String medicineStatus=service.getPrescription(appointmentId);
+                    if(!medicineStatus.equalsIgnoreCase("Incomplete")&&
+                        !medicineStatus.isEmpty() &&
+                        !medicineStatus.equalsIgnoreCase("Completed-Consultation Only")){
                         Appointment updatedAppointment=new Appointment(
                                 appointments.get(i).getAppointmentID(),
                                 appointments.get(i).getCustomerID(),
