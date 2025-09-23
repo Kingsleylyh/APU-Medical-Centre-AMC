@@ -1089,6 +1089,8 @@ public class MedicineGUI extends javax.swing.JFrame implements PrescriptionProce
                 service.validateEndTime(endtimeTxt.getText()) != 3) {
             highlightField(feeTxt);
             highlightField(endtimeTxt);
+            validateFeeField();
+            validateEndTime();
             JOptionPane.showMessageDialog(this, "Please fix the highlighted fields before submitting.");
             return;
         }
@@ -1110,6 +1112,32 @@ public class MedicineGUI extends javax.swing.JFrame implements PrescriptionProce
         if(!validatePrescriptionForm(medicineName)) {
             return;
         }
+
+        //if prescription for medicine has existed, ask user to confirm update
+        Medicine medicine=service.findMedicineByName(medicineName);
+        if(medicine != null) {
+            String prescriptionKey=medicine.getMedicineId()+"("+String.valueOf(form.getSelectedItem())+")";
+            boolean exists=false;
+
+            List<PrescriptionItem> temporary=service.getTemporaryPrescriptionItems();
+            for(PrescriptionItem item:temporary){
+                String key=item.getMedicineId()+"("+item.getForm()+")";
+                if(key.equalsIgnoreCase(prescriptionKey)){
+                    exists=true;
+                    break;
+                }
+            }
+            if(exists){
+                int option=JOptionPane.showConfirmDialog(this,
+                        "A prescription already exists for " + medicineName + " (" + form.getSelectedItem() + ").\n" +
+                                "Are you sure you want to update it?",
+                        "Update Prescription", JOptionPane.YES_NO_OPTION);
+                if(option!=JOptionPane.YES_OPTION){
+                    return;
+                }
+            }
+        }
+
         try{
             String result = service.addOrUpdatePrescription(
                     selectedMedicine.getMedicineId(),
@@ -1126,6 +1154,7 @@ public class MedicineGUI extends javax.swing.JFrame implements PrescriptionProce
             calculateCharges();
             totalLabel.setText("0.00");
             clearPrescriptionForm();
+
 
             String message = result.equals("updated") ?
                     "Prescription updated (not saved yet)!" :
@@ -1262,13 +1291,6 @@ public class MedicineGUI extends javax.swing.JFrame implements PrescriptionProce
 
         if (strength.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, "Please select a strength!");
-            return false;
-        }
-
-        if(doseAmount.getText().isEmpty() || daysTxt.getText().isEmpty()) {
-            highlightField(doseAmount);
-            highlightField(daysTxt);
-            JOptionPane.showMessageDialog(this, "Please fix the highlighted fields before submitting.");
             return false;
         }
 
