@@ -279,7 +279,7 @@
                   <Color blue="5d" green="7c" red="99" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\User\Downloads\notification.png"/>
+                  <Image iconType="3" name="/amc/group/pkg9/notificationIcon.png"/>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>

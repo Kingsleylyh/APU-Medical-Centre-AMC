@@ -216,7 +216,7 @@ public class DocDashboard extends javax.swing.JFrame {
         });
 
         jButton6.setForeground(new java.awt.Color(153, 124, 93));
-        jButton6.setIcon(new javax.swing.ImageIcon("C:\\Users\\User\\Downloads\\notification.png")); // NOI18N
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/amc/group/pkg9/notificationIcon.png"))); // NOI18N
         jButton6.setBorder(null);
         jButton6.setBorderPainted(false);
         jButton6.setContentAreaFilled(false);
