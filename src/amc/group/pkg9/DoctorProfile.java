@@ -235,6 +235,7 @@ public class DoctorProfile extends javax.swing.JFrame {
 
             String[] daysOrder = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
+            boolean hasOperationHours = false;
             boolean firstDay = true;
             for (String day : daysOrder) {
                 boolean activeDay = false;
@@ -249,6 +250,8 @@ public class DoctorProfile extends javax.swing.JFrame {
                     DefaultTableModel model = dayModels.get(day);
 
                     if (model != null && model.getRowCount() > 0) {
+                        hasOperationHours=true;
+
                         if (!firstDay) {
                             dayStr.append("<br>");
                             timeStr.append("<br>");
@@ -282,6 +285,12 @@ public class DoctorProfile extends javax.swing.JFrame {
                     }
                 }
             }
+            //if no operation hours, display this
+            if(!hasOperationHours){
+                dayStr = new StringBuilder("<html>-</html>");
+                timeStr = new StringBuilder("<html>No operation hours yet! Please configure early.</html>");
+            }
+
             dayStr.append("</html>");
             timeStr.append("</html>");
 
