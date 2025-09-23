@@ -36,32 +36,6 @@ public class PrescriptionService {
         loadData();
     }
 
-    public void updateAppointmentStatus(String appointmentId) throws IOException {
-        for(int i = 0; i < appointments.size(); i++){
-            Appointment appointment = appointments.get(i);
-            if(appointment.getAppointmentID().equals(appointmentId) &&
-                    appointment.getStatus().equalsIgnoreCase("Present")){
-
-                String medicineStatus = getPrescription(appointmentId);
-                if(!medicineStatus.equalsIgnoreCase("Incomplete")){
-                    Appointment updatedAppointment = new Appointment(
-                            appointment.getAppointmentID(),
-                            appointment.getCustomerID(),
-                            appointment.getDoctorID(),
-                            appointment.getDateTime(),
-                            "Unpaid",
-                            0.00
-                    );
-
-                    appointments.set(i, updatedAppointment);
-                    DoctorFileManager.saveAppointment(appointments);
-                    System.out.println("Appointment status updated for: " + appointmentId);
-                    break;
-                }
-            }
-        }
-    }
-
 
     public String getUsername(String userId) throws IOException {
         for(User user : users){
