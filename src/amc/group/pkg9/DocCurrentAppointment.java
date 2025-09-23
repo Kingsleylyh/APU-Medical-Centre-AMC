@@ -120,7 +120,7 @@ public class DocCurrentAppointment extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(153, 124, 93));
         jLabel1.setText("Current Appointment");
 
-        jButton2.setIcon(new javax.swing.ImageIcon("C:\\Users\\User\\Downloads\\left (1).png")); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/amc/group/pkg9/backIcon.png"))); // NOI18N
         jButton2.setBorder(null);
         jButton2.setBorderPainted(false);
         jButton2.setContentAreaFilled(false);
