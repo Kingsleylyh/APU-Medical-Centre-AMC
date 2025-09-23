@@ -81,7 +81,7 @@ public class PrescriptionItem extends PrescriptionComponent {
         try{
             List<PrescriptionItem> items=DoctorFileManager.loadPrescriptionItems();
             for(PrescriptionItem item:items){
-                int id = Integer.parseInt(item.getId().substring(3));
+                int id = Integer.parseInt(item.getId().substring(4));
                 if (id > maxId)
                     maxId = id;
             }
