@@ -201,7 +201,7 @@ public class MedicineService {
         hasUnsavedChanges = true;
         hasCalculatedTotal = false;
 
-        return isUpdate ? "updated" : "added";
+        return isUpdate?"updated" : "added";
     }
 
     public boolean removePrescription(String medicineId) {
@@ -327,6 +327,7 @@ public class MedicineService {
     }
 
     public List<Medicine> getMedicineList() { return medicineList; }
+    public List<PrescriptionItem> getTemporaryPrescriptionItems() {return temporaryPrescriptionItems;}
     public String getStartTime() { return startTime; }
     public boolean hasCalculatedTotal() { return hasCalculatedTotal; }
     public boolean isDataSaved() { return dataSaved; }
