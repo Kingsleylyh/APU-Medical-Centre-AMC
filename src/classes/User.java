@@ -9,6 +9,7 @@ public abstract class User {
 	protected String username;
 	protected String password;
 	protected String name;
+	protected static boolean isLogin;
 	protected Role role;
 
 	public User(String id, String username, String password, String name) {
@@ -50,5 +51,13 @@ public abstract class User {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public static boolean isIsLogin() {
+		return isLogin;
+	}
+
+	public static void setIsLogin(boolean isLogin) {
+		User.isLogin = isLogin;
 	}
 }
