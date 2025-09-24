@@ -1167,14 +1167,54 @@ public class MedicineGUI extends javax.swing.JFrame implements PrescriptionProce
     }//GEN-LAST:event_addPrescriptionButtonMouseReleased
 
     private void removeButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_removeButtonMouseReleased
-        String medicineName = selectedMedicines.getSelectedValue();
+        List<PrescriptionItem> temporary=service.getTemporaryPrescriptionItems();
 
-        if(medicineName == null) {
-            JOptionPane.showMessageDialog(this, "Please select a medicine from the list!");
+        if(temporary.isEmpty()){ //check if prescription list is empty
+            JOptionPane.showMessageDialog(this, "No prescription to remove!");
             return;
         }
 
-        int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove " + medicineName + " from the prescription?",
+        //setup display for each prescription item
+        String[] prescriptionDisplays=new String[temporary.size()];
+        for(int i=0;i<temporary.size();i++){
+            PrescriptionItem item=temporary.get(i);
+            String medicineName=getMedicineNamebyId(item.getMedicineId());
+            prescriptionDisplays[i]=String.format("%s (%s) - %s %s, %s, %d days",
+                    medicineName,
+                    item.getForm(),
+                    item.getDoseAmount(),
+                    item.getUnit(),
+                    item.getFrequency(),
+                    item.getDays()
+            );
+        }
+
+        //show selection dialog
+        String selectedPrescription=(String)JOptionPane.showInputDialog(this, "Select a prescription to remove: ",
+        "Remove Prescription", JOptionPane.QUESTION_MESSAGE, null, prescriptionDisplays, prescriptionDisplays[0]);
+
+        String medicineName = selectedMedicines.getSelectedValue();
+
+        if(selectedPrescription==null){
+            return;
+        }
+
+        int selectedIndex=-1;
+        for(int i=0;i<prescriptionDisplays.length;i++){
+            if(prescriptionDisplays[i].equalsIgnoreCase(selectedPrescription)){
+                selectedIndex=i;
+                break;
+            }
+        }
+
+        if(selectedIndex==-1){
+            JOptionPane.showMessageDialog(this, "Invalid selection! Could not find selected prescription.");
+            return;
+        }
+
+        PrescriptionItem item=temporary.get(selectedIndex);
+
+        int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this prescription?\n\n" + selectedPrescription,
                 "Remove Prescription", JOptionPane.YES_NO_OPTION);
 
         if(option != JOptionPane.YES_OPTION) {
@@ -1182,25 +1222,20 @@ public class MedicineGUI extends javax.swing.JFrame implements PrescriptionProce
         }
 
         try {
-            Medicine medicine = service.findMedicineByName(medicineName);
-            if (medicine == null) {
-                JOptionPane.showMessageDialog(this, "Medicine not found in database!");
-                return;
+            boolean removed = service.removePrescription(item.getMedicineId(),item.getForm());
+
+            if (removed){
+                medicineName=getMedicineNamebyId(item.getMedicineId());
+                if(!hasSameMedicine(item.getMedicineId())) {
+                    selectedMedicineModel.removeElement(medicineName);
+                }
+                calculateCharges();
+                totalLabel.setText("0.00");
+                clearFormFields();
+                JOptionPane.showMessageDialog(this, "Prescription has been removed successfully (not saved yet)!");
+            }else {
+                JOptionPane.showMessageDialog(this, "Failed to remove prescription!");
             }
-
-            boolean removed = service.removePrescription(medicine.getMedicineId());
-
-            if(!removed) {
-                JOptionPane.showMessageDialog(this, "No prescription found for: " + medicineName);
-                return;
-            }
-
-            selectedMedicineModel.removeElement(medicineName);
-            calculateCharges();
-            totalLabel.setText("0.00");
-            clearFormFields();
-
-            JOptionPane.showMessageDialog(this, "Prescription for " + medicineName + " has been removed (not saved yet)!");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error removing prescription: " + e.getMessage());
         }
@@ -1224,8 +1259,20 @@ public class MedicineGUI extends javax.swing.JFrame implements PrescriptionProce
         selectedMedicineModel.removeElement(medicine);
         Medicine med = service.findMedicineByName(medicine);
 
+        //delete all prescriptions of the removed medicine
         if (med != null) {
-            service.removePrescription(med.getMedicineId());
+            List<PrescriptionItem> temporary = service.getTemporaryPrescriptionItems();
+            List<PrescriptionItem> itemsToRemove=new ArrayList<>();
+
+            for(PrescriptionItem item:temporary){
+                if(item.getMedicineId().equals(med.getMedicineId())){
+                    itemsToRemove.add(item);
+                }
+            }
+
+            for(PrescriptionItem item:itemsToRemove){
+                service.removePrescription(item.getMedicineId(),item.getForm());
+            }
         }
 
         // Clear form
@@ -1322,6 +1369,25 @@ public class MedicineGUI extends javax.swing.JFrame implements PrescriptionProce
         daysTxt.setText("");
         clearHighlight(doseAmount);
         clearHighlight(daysTxt);
+    }
+
+    private String getMedicineNamebyId(String medicineId) {
+        for(Medicine medicine: service.getMedicineList()) {
+            if(medicine.getMedicineId().equals(medicineId)) {
+                return medicine.getName();
+            }
+        }
+        return "Unknown Medicine";
+    }
+
+    private boolean hasSameMedicine(String medicineId){
+        List<PrescriptionItem> temp=service.getTemporaryPrescriptionItems();
+        for(PrescriptionItem item: temp){
+            if(item.getMedicineId().equals(medicineId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
