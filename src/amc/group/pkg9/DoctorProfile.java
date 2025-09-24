@@ -168,19 +168,19 @@ public class DoctorProfile extends javax.swing.JFrame {
                     String start2 = timeFormat.format(block2.getStartTime());
                     String end2 = timeFormat.format(block2.getEndTime());
 
+                    if (start1.equals(start2) && end1.equals(end2)) {
+                        JOptionPane.showMessageDialog(this,String.format(
+                                "%s: Duplicate time blocks found in rows %d and %d (%s-%s)."
+                                ,day,block1.getRowNumber()+1,block2.getRowNumber()+1,start1,end1));
+                        return false;
+                    }
+
                     if (start1.compareTo(end2) < 0&&start2.compareTo(end1)<0) {
                         JOptionPane.showMessageDialog(this,
                                 String.format("%s: Time overlap between rows %d (%s-%s) and %d (%s-%s).",
                                         day, block1.getRowNumber()+1,start1,
                                         end1, block2.getRowNumber()+1, start2,
                                         end2));
-                        return false;
-                    }
-
-                    if (start1.equals(start2) && end1.equals(end2)) {
-                        JOptionPane.showMessageDialog(this,String.format(
-                                "%s: Duplicate time blocks found in rows %d and %d (%s-%s)."
-                                        ,day,block1.getRowNumber()+1,block2.getRowNumber()+1,start1,end1));
                         return false;
                     }
                 }

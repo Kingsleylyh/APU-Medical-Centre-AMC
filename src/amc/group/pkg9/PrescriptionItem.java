@@ -76,21 +76,6 @@ public class PrescriptionItem extends PrescriptionComponent {
         return "Unknown Medicine";
     }
 
-    public static String getNextItemId(){
-        int maxId = 0;
-        try{
-            List<PrescriptionItem> items=DoctorFileManager.loadPrescriptionItems();
-            for(PrescriptionItem item:items){
-                int id = Integer.parseInt(item.getId().substring(4));
-                if (id > maxId)
-                    maxId = id;
-            }
-        } catch (IOException e) {
-            System.err.println("Error loading prescription amounts: " + e.getMessage());
-        }
-        return String.format("ITEM%03d", maxId + 1);
-    }
-
     public String getMedicineId() {
         return medicineId;
     }

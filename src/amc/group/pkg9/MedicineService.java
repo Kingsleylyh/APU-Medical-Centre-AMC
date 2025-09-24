@@ -104,6 +104,36 @@ public class MedicineService {
         return results;
     }
 
+    public String getNextItemId(){
+        int maxId = 0;
+
+        for(PrescriptionItem item:allItems){
+            String itemId = item.getId();
+            if(itemId!=null&&itemId.startsWith("ITEM")){
+                try{
+                    int id = Integer.parseInt(itemId.substring(4));
+                    if (id > maxId) {
+                        maxId = id;
+                    }
+                } catch (NumberFormatException e) { //skip invalid id
+                }
+            }
+        }
+        for(PrescriptionItem item: temporaryPrescriptionItems){
+            String itemId=item.getId();
+            if(itemId!=null&&itemId.startsWith("ITEM")){
+                try {
+                    int id = Integer.parseInt(itemId.substring(4));
+                    if (id > maxId) {
+                        maxId = id;
+                    }
+                }catch (NumberFormatException e){
+                }
+            }
+        }
+        return String.format("ITEM%03d", maxId + 1);
+    }
+
     public Medicine findMedicineByName(String medicineName){
         for(Medicine medicine:medicineList){
             if(medicine.getName().equalsIgnoreCase(medicineName)){
@@ -178,7 +208,7 @@ public class MedicineService {
     public String addOrUpdatePrescription(String medicineId, String strengthStr, String dosageAmount,
                                           String formStr, String unitStr, String routeStr, String frequencyStr, int days, double unitPrice) {
 
-        String itemId = PrescriptionItem.getNextItemId();
+        String itemId = getNextItemId();
         PrescriptionItem newItem = new PrescriptionItem(itemId, appointmentId, medicineId,
                 strengthStr, dosageAmount, formStr, unitStr, frequencyStr, routeStr, days, unitPrice);
 
@@ -204,11 +234,11 @@ public class MedicineService {
         return isUpdate?"updated" : "added";
     }
 
-    public boolean removePrescription(String medicineId) {
+    public boolean removePrescription(String medicineId,String form) {
         boolean removed = false;
         for(int i = 0; i < temporaryPrescriptionItems.size(); i++) {
             PrescriptionItem item = temporaryPrescriptionItems.get(i);
-            if(item.getMedicineId().equals(medicineId)) {
+            if(item.getMedicineId().equals(medicineId)&&item.getForm().equalsIgnoreCase(form)) {
                 temporaryPrescriptionItems.remove(i);
                 components.remove(item);
                 removed = true;
@@ -310,7 +340,10 @@ public class MedicineService {
         }
 
         if(prescriptionAmount != null) {
-            List<PrescriptionAmount> amounts = new ArrayList<>();
+            List<PrescriptionAmount> amounts = DoctorFileManager.loadPrescriptionAmount();
+            //remove existing amount for this appointment
+            amounts.removeIf(amount->amount.getAppointmentId().equals(appointmentId));
+            //add current amount
             amounts.add(prescriptionAmount);
             DoctorFileManager.savePrescriptionAmount(amounts);
         }
@@ -319,7 +352,10 @@ public class MedicineService {
 
     public void saveAmount() throws IOException {
         if(prescriptionAmount != null) {
-            List<PrescriptionAmount> amounts = new ArrayList<>();
+            List<PrescriptionAmount> amounts = DoctorFileManager.loadPrescriptionAmount();
+            //remove existing amount for this appointment
+            amounts.removeIf(amount->amount.getAppointmentId().equals(appointmentId));
+            //add current amount
             amounts.add(prescriptionAmount);
             DoctorFileManager.savePrescriptionAmount(amounts);
             dataSaved = true;

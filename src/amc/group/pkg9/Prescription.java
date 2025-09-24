@@ -37,8 +37,9 @@ public class Prescription {
             "injection",
             "im injection",
             "iv injection",
-            "ml",
-            "inhaler"
+            "iv",
+            "inhaler",
+            "ml"
     };
 
     public static int validateDosageInput(String dosageInput,String drugForm){
@@ -62,7 +63,7 @@ public class Prescription {
             }
             for(String form:doubleForm) {
                 if (form.equalsIgnoreCase(drugForm)){
-                    String numericPart = dosageInput.replaceAll("[^0-9.]", "");
+                    String numericPart = dosageInput.replaceAll("[^0-9.-]", "");
                     if(numericPart.isEmpty()){
                         return 4; //no number found
                     }

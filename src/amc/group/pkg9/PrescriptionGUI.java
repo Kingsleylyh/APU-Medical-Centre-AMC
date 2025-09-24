@@ -125,9 +125,12 @@ public class PrescriptionGUI extends javax.swing.JFrame {
     }
 
     private void updateButtonState(int columnIndex, JButton button) {
-        if(columnIndex != -1){
-            String value = String.valueOf(table.getValueAt(row, columnIndex));
-            button.setEnabled(value.equalsIgnoreCase("Incomplete"));
+        if(columnIndex!=-1&&row>=0&&row<table.getRowCount()){
+            Object value = String.valueOf(table.getValueAt(row, columnIndex));
+            String valueStr=(value!=null)?value.toString():"";
+            button.setEnabled("Incomplete".equalsIgnoreCase(valueStr));
+        }else{
+            button.setEnabled(false);
         }
     }
 
@@ -397,6 +400,33 @@ public class PrescriptionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_feedbackButtonMouseExited
 
     private void feedbackButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_feedbackButtonMouseReleased
+        if(!feedbackButton.isEnabled()) {
+            return;
+        }
+
+        int selectedRow = table.getSelectedRow();
+        if(selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select an appointment first.");
+            return;
+        }
+
+        int feedbackColumn = -1;
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            if("Feedback".equalsIgnoreCase(table.getColumnName(i))){
+                feedbackColumn = i;
+                break;
+            }
+        }
+
+        if(feedbackColumn != -1) {
+            Object value = table.getValueAt(selectedRow, feedbackColumn);
+            String valueStr = (value != null) ? value.toString() : "";
+            if(!"Incomplete".equalsIgnoreCase(valueStr)) {
+                JOptionPane.showMessageDialog(this, "Feedback is already completed for this appointment.");
+                return;
+            }
+        }
+
         feedbackButton.setBackground(Color.decode("#19408D").darker());
         int choice=JOptionPane.showConfirmDialog(null,feedbackPanel,"Feedback",JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
         if(choice==JOptionPane.OK_OPTION){
@@ -428,6 +458,33 @@ public class PrescriptionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_feedbackButtonMouseReleased
 
     private void medicineButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_medicineButtonMouseReleased
+        if(!medicineButton.isEnabled()) {
+            return;
+        }
+
+        int selectedRow = table.getSelectedRow();
+        if(selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select an appointment first.");
+            return;
+        }
+
+        int medicineColumn = -1;
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            if("Medicine".equalsIgnoreCase(table.getColumnName(i))){
+                medicineColumn = i;
+                break;
+            }
+        }
+
+        if(medicineColumn != -1) {
+            Object value = table.getValueAt(selectedRow, medicineColumn);
+            String valueStr = (value != null) ? value.toString() : "";
+            if(!"Incomplete".equalsIgnoreCase(valueStr)) {
+                JOptionPane.showMessageDialog(this, "Medicine prescription is already completed for this appointment.");
+                return;
+            }
+        }
+
         medicineButton.setBackground(Color.decode("#19408D").darker());
         String appointmentId=String.valueOf(table.getValueAt(table.getSelectedRow(),0));
         MedicineGUI med=new MedicineGUI(this,appointmentId);
