@@ -65,10 +65,6 @@ public class PrescriptionAmount extends PrescriptionComponent {
 
             int duration=endTotalMins-startTotalMins;
 
-            //if 0100-2300 add 24h*60mins
-            if(duration<0){
-                duration+=24*60;
-            }
             return duration;
         } catch (Exception e) {
             return 0;
