@@ -10,12 +10,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
-public class MedicineGUI extends javax.swing.JFrame implements PrescriptionProcessor{
+public class MedicineGUI extends javax.swing.JFrame{
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MedicineGUI.class.getName());
 
@@ -40,21 +38,6 @@ public class MedicineGUI extends javax.swing.JFrame implements PrescriptionProce
         setupUI();
         validation();
         medicineSelectionListener();
-    }
-
-    @Override
-    public void processPrescription(List<PrescriptionComponent> components){
-        calculateCharges();
-    }
-
-    @Override
-    public double calculateTotalCost(List<PrescriptionComponent> components){
-        return service.calculateTotalCost(components);
-    }
-
-    @Override
-    public String generateSummary(List<PrescriptionComponent> components){
-        return service.generateSummary();
     }
 
     private void loadData(){
