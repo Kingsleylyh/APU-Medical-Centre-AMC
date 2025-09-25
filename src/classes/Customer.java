@@ -6,7 +6,7 @@ import interfaces.FileAction;
  *
  * @author Daryl
  */
-public class Customer extends User implements FileAction {
+public class Customer extends User {
 	private int age;
 	private Role role = Role.CUSTOMER;
 	private String customerFile = "customer.txt";
@@ -20,16 +20,6 @@ public class Customer extends User implements FileAction {
 	@Override
 	public Role getRole() {
 		return role;
-	}
-	
-	@Override
-	public void getDataFromFile(String filename) {
-		filename = customerFile;
-	}
-
-	@Override
-	public void saveDataToFile(String filename) {
-		filename = customerFile;
 	}
 
 	public int getAge() {

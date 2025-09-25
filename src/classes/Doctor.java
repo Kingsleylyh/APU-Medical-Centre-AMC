@@ -7,11 +7,10 @@ import java.util.List;
  *
  * @author Daryl
  */
-public class Doctor extends User implements FileAction {
+public class Doctor extends User {
 	private String specialization;
 	private Role role = Role.DOCTOR;
 	private List<Appointment> appointments;
-	private String doctorFile = "doctor.txt";
 
 	public Doctor(String specialization, String id, String username, String password, String name) {
 		super(id, username, password, name);
@@ -22,16 +21,6 @@ public class Doctor extends User implements FileAction {
 	@Override
 	public Role getRole() {
 		return role;
-	}
-	
-	@Override
-	public void getDataFromFile(String filename) {
-		filename = doctorFile;
-	}
-
-	@Override
-	public void saveDataToFile(String filename) {
-		filename = doctorFile;
 	}
 
 	public String getSpecialization() {

@@ -6,11 +6,10 @@ import interfaces.FileAction;
  *
  * @author Daryl
  */
-public class Staff extends User implements FileAction {
+public class Staff extends User {
 	private String department;
 	private String team;
 	private Role role = Role.STAFF;
-	private String staffFile = "staff.txt";
 
 	public Staff(String department, String team, String id, String username, String password, String name) {
 		super(id, username, password, name);
@@ -22,16 +21,6 @@ public class Staff extends User implements FileAction {
 	@Override
 	public Role getRole() {
 		return role;
-	}
-	
-	@Override
-	public void getDataFromFile(String filename) {
-		filename = staffFile;
-	}
-
-	@Override
-	public void saveDataToFile(String filename) {
-		filename = staffFile;
 	}
 
 	public String getDepartment() {
