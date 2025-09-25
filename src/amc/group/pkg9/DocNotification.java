@@ -5,6 +5,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +42,8 @@ public class DocNotification extends javax.swing.JFrame {
         };
         initComponents();
         setupTable();
-        loadNotifications();
         notificationManager.setReminderTime();
+        loadNotifications();
     }
 
     private void setupTable(){
@@ -72,7 +75,15 @@ public class DocNotification extends javax.swing.JFrame {
 
     private void loadNotifications(){
         model.setRowCount(0);
-        for(Notification notification:notificationManager.getDoctorNotifications()){
+
+        List<Notification> notifications=new ArrayList<>(notificationManager.getDoctorNotifications());
+
+        //sort notifications by date (the latest first)
+        notifications.sort((n1,n2)->{
+            return n2.getSentDate().compareTo(n1.getSentDate()); // newest first
+        });
+
+        for(Notification notification:notifications){
             String[] row= {
                     notification.getNotificationId(),
                     notification.getTitle(),
@@ -82,6 +93,8 @@ public class DocNotification extends javax.swing.JFrame {
             model.addRow(row);
         }
     }
+
+
 
     public void refreshNotifications() {
         notificationManager.refreshData();

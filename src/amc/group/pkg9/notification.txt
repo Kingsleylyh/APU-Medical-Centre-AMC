@@ -1,9 +1,2 @@
-N001|U001|Schedule Confirmed|Appointment A001 with John Smith on 2024-12-21 10:00 has been confirmed by Staff Alice.|2024-12-20
-N002|U001|Appointment Reminder|You have an appointment A001 with John Smith on 2024-12-20 14:30.|2024-12-20
-N003|U002|Schedule Confirmed|Appointment A002 with Mary Johnson on 2024-12-21 09:00 has been confirmed by Staff Bob.|2024-12-20
-N005|U003|Appointment Reminder|You have an appointment A003 with Robert Wilson on 2024-12-20 16:00.|2024-12-20
-N006|U001|Schedule Confirmed|Appointment A004 with Sarah Davis on 2024-12-19 11:30 has been confirmed by Staff Carol.|2024-12-18
-N007|U002|Policy Update|New patient registration policy effective from 2024-12-25.|2024-12-20
-N008|U001|Appointment Reminder|You have an appointment A005 with Michael Brown on 2024-12-20 15:45.|2024-12-20
-N009|U001|Schedule Confirmed|Appointment A004 with Sarah Davis on 2024-12-19 11:30 has been confirmed by Staff Carol.|2024-12-18
-N010|U002|Policy Update|New patient registration policy effective from 2024-12-25.|2024-12-20
+N001|U001|Schedule Confirmed|Appointment A002 with Sarah Jones on 2025-09-26 03:00.|2025-09-20
+N002|U001|Appointment Reminder|You have an appointment A002 with Sarah Jones on 2025-09-26 03:00.|2025-09-26

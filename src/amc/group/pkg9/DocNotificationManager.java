@@ -22,6 +22,8 @@ public class DocNotificationManager {
 
     public void loadData(){
         try{
+            service.createReminder(userId);
+
             List<String[]> notificationData=service.loadNotifications(userId);
             List<Notification> notifications=new ArrayList<>();
 

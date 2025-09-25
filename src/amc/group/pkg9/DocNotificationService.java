@@ -53,14 +53,38 @@ public class DocNotificationService {
         }
     }
 
+    public String getDate(String dateTime){
+        try{
+            DateTimeFormatter input=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            DateTimeFormatter output=DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime dt=LocalDateTime.parse(dateTime,input);
+            return dt.format(output);
+        } catch (Exception e) {
+            if(dateTime.contains(" ")){
+                return dateTime.split(" ")[0];
+            }
+            return dateTime;
+        }
+    }
+
+    private boolean reminderExists(String userId, String appointmentId) {
+        for(Notification notification:notifications) {
+            if (notification.getUserId().equals(userId) &&
+                    notification.getTitle().equalsIgnoreCase("Appointment Reminder") &&
+                    notification.getMessage().contains(appointmentId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void createReminder(String userId){
         try {
             notifications = DoctorFileManager.loadNotifications();
             appointments = DoctorFileManager.loadAppointment();
 
             LocalDateTime currentTime = LocalDateTime.now();
-            LocalDateTime reminderTime = currentTime.plusMinutes(remindBefore);
-            boolean created=false;
+            String today = getDate(currentTime.format(formatter));
 
             for (Appointment appointment : appointments) {
                 if (!appointment.getDoctorID().equals(userId) ||
@@ -69,33 +93,19 @@ public class DocNotificationService {
                 }
                 LocalDateTime dateTime = LocalDateTime.parse(appointment.getDateTime(), formatter);
 
-                if (dateTime.isBefore(reminderTime)) {
-                    continue;
-                }
-
                 //create reminder 30 minutes before appointment start time
                 long minutesBetween = ChronoUnit.MINUTES.between(currentTime, dateTime);
-                if (minutesBetween > 0 && minutesBetween <= remindBefore) {
-                    String today = LocalDateTime.now().format(formatter);
-                    boolean exists = false;
-                    for (Notification notification : notifications) {
-                        if (notification.getUserId().equals(userId) && notification.getMessage().contains(appointment.getAppointmentID())
-                                && notification.getSentDate().equals(today) && notification.getTitle().equalsIgnoreCase("Appointment Reminder")) {
-                            exists = true;
-                            break;
-                        }
-                    }
-                    if (!exists) {
+                if (Math.abs(minutesBetween)<=30) {
+                    if(!reminderExists(userId,appointment.getAppointmentID())) {
                         try {
                             String notificationId = Notification.getNextID();
-                            String currentDate = LocalDateTime.now().format(formatter);
+                            String currentDate = getDate(LocalDateTime.now().format(formatter));
                             String title = "Appointment Reminder";
                             String patientName = getPatientName(appointment.getCustomerID());
                             String msg = String.format("You have an appointment %s with %s on %s.", appointment.getAppointmentID(), patientName, appointment.getDateTime());
 
                             Notification notification = new Notification(notificationId, userId, title, msg, currentDate);
                             notifications.add(notification);
-                            created=true;
                             DoctorFileManager.saveNotification(notifications);
                         } catch (Exception e) {
                             System.err.println("Error creating appointment reminder notification: " + e.getMessage());
