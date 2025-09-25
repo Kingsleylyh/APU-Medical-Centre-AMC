@@ -15,7 +15,8 @@ public class PrescriptionItem extends PrescriptionComponent {
     private double unitPrice;
     private double itemCost;
 
-    public PrescriptionItem(String itemId,String appointmentId,String medicineId,String strength,String doseAmount,String form,String unit,String frequency,String route,int days,double unitPrice){
+    public PrescriptionItem(String itemId,String appointmentId,String medicineId,String strength,String doseAmount,String form,
+            String unit,String frequency,String route,int days,double unitPrice){
         super(itemId,appointmentId);
         this.medicineId=medicineId;
         this.strength=strength;
