@@ -1,25 +1,28 @@
 package classes;
 
 public class Appointment {
-	public enum Status { PENDING, COMPLETED, CANCELLED }
 
 	private String appointmentId;
 	private String customerId;
+	private String customerName;
+	private String doctorId;
 	private String doctorName;
-	private String date;
-	private String time;
+	private String dateTime;
+	private double consultationFee;
 	private Status status;
-	
-	public Appointment(String appointmentId, String customerId, String doctorName,
-				String date, String time, Status status) {
+
+	public Appointment(String appointmentId, String customerId, String customerName, String doctorId, 
+					String doctorName, String dateTime, double consultationFee, Status status) {
 		this.appointmentId = appointmentId;
 		this.customerId = customerId;
+		this.customerName = customerName;
+		this.doctorId = doctorId;
 		this.doctorName = doctorName;
-		this.date = date;
-		this.time = time;
+		this.dateTime = dateTime;
+		this.consultationFee = consultationFee;
 		this.status = status;
 	}
-	
+
 	public String getAppointmentId() {
 		return appointmentId;
 	}
@@ -36,6 +39,22 @@ public class Appointment {
 		this.customerId = customerId;
 	}
 
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getDoctorId() {
+		return doctorId;
+	}
+
+	public void setDoctorId(String doctorId) {
+		this.doctorId = doctorId;
+	}
+
 	public String getDoctorName() {
 		return doctorName;
 	}
@@ -44,33 +63,34 @@ public class Appointment {
 		this.doctorName = doctorName;
 	}
 
-	public String getDate() {
-		return date;
+	public String getDateTime() {
+		return dateTime;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setDateTime(String dateTime) {
+		this.dateTime = dateTime;
 	}
 
-	public String getTime() {
-		return time;
+	public double getConsultationFee() {
+		return consultationFee;
 	}
 
-	public void setTime(String time) {
-		this.time = time;
+	public void setConsultationFee(double consultationFee) {
+		this.consultationFee = consultationFee;
 	}
-	
-	public Status getStatus() { 
-		return status; 
+
+	public Status getStatus() {
+		return status;
 	}
-	
-	public void setStatus(Status status) { 
-		this.status = status; 
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 	
 	@Override
 	public String toString() {
-		return appointmentId + "," + customerId + "," + doctorName + "," + date + "," + time + "," + status;
+		return appointmentId + "," + customerId + "," + customerName + "," + doctorId + "," + doctorName + "," 
+				+ dateTime + "," + consultationFee + "," + status;
 	}
 
 	public static Appointment fromString(String line) {
@@ -79,19 +99,24 @@ public class Appointment {
 
 		String apptId = parts[0].trim();
 		String custId = parts[1].trim();
-		String doctor = parts[2].trim();
-		String date   = parts[3].trim();
-		String time   = parts[4].trim();
-
-		String rawStatus = parts[5].trim().toUpperCase(); // tolerate “Completed”, “ cancelled ”
-		if (rawStatus.equals("CANCELLED") || rawStatus.equals("CANCELED")) rawStatus = "CANCELLED";
-		Appointment.Status status;
+		String custName = parts[2].trim();
+		String doctorId = parts[3].trim();
+		String doctorName = parts[4].trim();
+		String dateTime   = parts[5].trim();
+		String rawConsultationFee   = parts[6].trim();
+		String rawStatus = parts[7].trim();
+		
+		double consultationFee;
+		Status status;
 		try {
-			status = Appointment.Status.valueOf(rawStatus);
+			consultationFee = Double.parseDouble(rawConsultationFee);
+			status = Status.valueOf(rawStatus);
 		} catch (IllegalArgumentException e) {
 			return null; // bad row -> skip
+		} catch (Exception e) {
+			return null;
 		}
 
-		return new Appointment(apptId, custId, doctor, date, time, status);
+		return new Appointment(apptId, custId, custName, doctorId, doctorName, dateTime, consultationFee, status);
 	}
 }

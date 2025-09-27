@@ -1,14 +1,15 @@
 package classes;
 
+import java.util.Date;
+
 public class Staff extends User {
-	private String department;
-	private String team;
+	private String position;
 	private Role role = Role.STAFF;
 
-	public Staff(String department, String team, String id, String username, String password, String name) {
-		super(id, username, password, name);
-		this.department = department;
-		this.team = team;
+	public Staff(String userId, String username, String password, String name, String email, String phone, 
+				Date dob, String NRIC, String position) {
+		super(userId, username, password, name, email, phone, dob, NRIC);
+		this.position = position;
 		this.role = Role.STAFF;
 	}
 	
@@ -17,19 +18,11 @@ public class Staff extends User {
 		return role;
 	}
 
-	public String getDepartment() {
-		return department;
+	public String getPosition() {
+		return position;
 	}
 
-	public void setDepartment(String department) {
-		this.department = department;
+	public void setPosition(String position) {
+		this.position = position;
 	}
-
-	public String getTeam() {
-		return team;
-	}
-
-	public void setTeam(String team) {
-		this.team = team;
-	}	
 }

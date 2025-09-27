@@ -17,7 +17,7 @@ public enum Role {
 	}
 	
 	// Call this method when loading users from users.txt and creating object
-	public Role getEnumByDescription(String roleDescription) {
+	public Role getRoleEnumByDescription(String roleDescription) {
 		for(Role role : Role.values()) {
 			if(role.roleDescription.equals(roleDescription)) {
 				return role;
