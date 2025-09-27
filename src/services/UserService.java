@@ -61,7 +61,7 @@ public class UserService implements FileAction {
 			String user;
 			br.readLine(); // Read and ignore the first line (column names)
 			while((user = br.readLine()) != null){
-				String[] userData = user.split("|");
+				String[] userData = user.split("\\|");
 				
 				String userId = userData[0];
 				String username = userData[1];
