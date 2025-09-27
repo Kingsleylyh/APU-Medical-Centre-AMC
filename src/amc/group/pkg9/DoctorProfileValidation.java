@@ -205,8 +205,8 @@ public class DoctorProfileValidation {
         if(name==null||name.isEmpty()){
             return 0; //empty input
         }
-        else if(name.matches(".\\s+.*")){
-            return 1; //name starts with whitespace
+        else if(!name.matches("^[\\p{L}\\p{M}](?:[\\p{L}\\p{M} .’'\\-/]*[\\p{L}\\p{M}])?$")){
+            return 1; //name contains invalid symbols (@ # $ % ^ & * ( ) _ + = { } [ ] \ | : ; " < > , ? and emoji)
         }
         else if(name.matches(".*\\d.*")){
             return 2; //name contains digit
@@ -225,15 +225,12 @@ public class DoctorProfileValidation {
         if(username.equals(doctorProfile.getUsername())){
             return 1; //same as original username
         }
-        if(username.matches(".\\s+.*")){
-            return 2; //username starts with whitespace
-        }
         for(User user:users){
             if(username.equals(user.getUsername())&&!user.getUserId().equals(doctorProfile.getUserId())){
-                return 3; //username already exists
+                return 2; //username already exists
             }
         }
-        return 4; //valid username
+        return 3; //valid username
     }
 
     public int validatePassword(String password){
@@ -269,13 +266,10 @@ public class DoctorProfileValidation {
         if (confirmPassword == null || confirmPassword.isEmpty()) {
             return 0; //empty input
         }
-        else if(confirmPassword.matches(".\\s+.*")){
-            return 1; //confirm password starts with whitespace
-        }
         else if (!confirmPassword.equals(password)) {
-            return 2; //passwords do not match
+            return 1; //passwords do not match
         } else {
-            return 3; //valid confirm password
+            return 2; //valid confirm password
         }
     }
 
@@ -286,18 +280,15 @@ public class DoctorProfileValidation {
         if(email.equals(doctorProfile.getEmail())){
             return 1; //same as original email
         }
-        if(email.matches(".*\\s+.*")){
-            return 2; //email contains whitespace
-        }
         if(!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
-            return 3; //invalid email format
+            return 2; //invalid email format
         }
         for(User user:users) {
             if (email.equals(user.getEmail())) {
-                return 4; //email already exists
+                return 3; //email already exists
             }
         }
-        return 5; //valid email
+        return 4; //valid email
     }
 
     public boolean updateProfile(String userId,String name,String username, String password, String email) {

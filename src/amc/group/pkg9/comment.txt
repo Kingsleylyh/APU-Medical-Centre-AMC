@@ -1,20 +1,2 @@
-COM001|A001|C001|Excellent service! Dr. Smith was very professional and explained everything clearly.
-COM002|A002|C002|Very satisfied with my appointment. The treatment was effective and painless.
-COM003|A003|C003|Great experience overall. The staff was friendly and the facilities were clean.
-COM004|A004|C004|Good service but had to wait a bit longer than expected. Otherwise satisfied.
-COM005|A005|C002|Second visit went smoothly. Appreciate the follow-up care provided.
-COM006|A006|C005|Outstanding treatment! The doctor was gentle and very knowledgeable.
-COM007|A007|C006|Professional service. The appointment was on time and well organized.
-COM008|A008|C007|Very happy with the results. Will definitely come back for future appointments.
-COM009|A009|C008|Excellent care and attention to detail. Felt comfortable throughout the procedure.
-COM010|A010|C009|Good experience but the waiting room could be more comfortable.
-COM011|A011|C010|Dr. Johnson was fantastic! Explained the procedure step by step.
-COM012|A012|C003|Clean facilities and modern equipment. Very impressed with the service.
-COM013|A013|C011|Friendly staff and efficient service. Made me feel at ease during treatment.
-COM014|A014|C012|Professional and caring approach. Would recommend to family and friends.
-COM015|A015|C013|Quick and effective treatment. Minimal discomfort and great results.
-COM016|A016|C014|Exceptional care from start to finish. Very pleased with the outcome.
-COM017|A017|C015|Good service overall. The doctor answered all my questions patiently.
-COM018|A018|C016|Very satisfied with the treatment quality and post-care instructions.
-COM019|A019|C017|Great bedside manner. Made a potentially stressful procedure very manageable.
-COM020|A020|C005|Follow-up appointment was handled perfectly. Thank you for the excellent care.
+COM009|A009|C008|Excellent care and attention to detail. Felt comfortable throughout the procedure.|5
+COM012|A012|C003|Clean facilities and modern equipment. Very impressed with the service.|4

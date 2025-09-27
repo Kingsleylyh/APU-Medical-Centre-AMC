@@ -360,7 +360,7 @@ public class DocDashboard extends javax.swing.JFrame {
 
 
         java.awt.EventQueue.invokeLater(() -> {
-            DocDashboard dd1=new DocDashboard("johndoe");
+            DocDashboard dd1=new DocDashboard("alexchen");
             dd1.setVisible(true);
             dd1.setLocationRelativeTo(null);
             dd1.setSize(800,600);

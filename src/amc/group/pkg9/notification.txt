@@ -1,2 +1,8 @@
 N001|U001|Schedule Confirmed|Appointment A002 with Sarah Jones on 2025-09-26 03:00.|2025-09-20
 N002|U001|Appointment Reminder|You have an appointment A002 with Sarah Jones on 2025-09-26 03:00.|2025-09-26
+N003|U009|Schedule Confirmed|Appointment A009 with Jason Lim on 2025-09-20 09:15.|2025-09-10
+N004|U009|Appointment Reminder|You have an appointment A009 with Jason Lim on 2025-09-26 09:15.|2025-09-26
+N006|U009|Appointment Reminder|You have an appointment A012 with Nurul Aini on 2025-09-25 16:45.|2025-09-15
+N007|U009|Schedule Confirmed|Appointment A017 with Amelia Tan on 2025-09-28 10:00.|2025-09-18
+N008|U009|Appointment Reminder|You have an appointment A017 with Amelia Tan on 2025-09-28 10:00.|2025-09-18
+

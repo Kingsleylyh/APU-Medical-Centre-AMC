@@ -68,23 +68,21 @@ public class DocAppointmentHistory extends javax.swing.JFrame {
     public void setupTextAreas(){
         TextAreaCellRenderer renderer = new TextAreaCellRenderer();
         int feedbackColumn=-1;
-        int messageColumn = -1;
+        int commentColumn = -1;
 
         for (int i = 0; i < jTable1.getColumnCount(); i++) {
             String columnName = jTable1.getColumnName(i);
-            if ("Message".equalsIgnoreCase(columnName)) {
-                messageColumn = i;
-                break;
+            if ("Comment".equalsIgnoreCase(columnName)) {
+                commentColumn = i;
             }
             if("Feedback".equalsIgnoreCase(columnName)) {
                 feedbackColumn=i;
-                break;
             }
         }
 
-        if (messageColumn != -1) {
-            jTable1.getColumnModel().getColumn(messageColumn).setCellRenderer(renderer);
-            jTable1.getColumnModel().getColumn(messageColumn).setPreferredWidth(200);
+        if (commentColumn != -1) {
+            jTable1.getColumnModel().getColumn(commentColumn).setCellRenderer(renderer);
+            jTable1.getColumnModel().getColumn(commentColumn).setPreferredWidth(200);
         }
 
         if(feedbackColumn!=-1) {

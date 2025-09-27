@@ -1,2 +1,2 @@
 F001|A001|U001|Good
-
+F002|A017|U009|I gave paracetamol today for pain/fever. You may continue tablets as prescribed.

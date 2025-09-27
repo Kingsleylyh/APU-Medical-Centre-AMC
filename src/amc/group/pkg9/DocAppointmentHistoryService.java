@@ -21,23 +21,12 @@ public class DocAppointmentHistoryService{
     private List<Comment> comments=new ArrayList<>();
 
 
-    private LocalDateTime parseDateTime(String dateTime){
-        try{
-            return LocalDateTime.parse(dateTime,formatterDateTime);
-        } catch (DateTimeException e) {
-            System.err.println("Failed to parse date-time:"+dateTime+"-"+e.getMessage());
-            return null;
-        }
-    }
-
     public List<String[]> getAppointmentHistory(String userId) throws IOException{
         users=DoctorFileManager.loadUsers();
         customers=DoctorFileManager.loadCustomer();
         appointments=DoctorFileManager.loadAppointment();
         feedbacks=DoctorFileManager.loadFeedback();
         comments=DoctorFileManager.loadComment();
-
-        LocalDateTime currentDateTime=LocalDateTime.now();
 
         Map<String,String> customerNames = new HashMap<>();
         Map<String,String> feedbackContent= new HashMap<>();
@@ -73,12 +62,10 @@ public class DocAppointmentHistoryService{
 
         for(Appointment appointment:doctorAppointments) {
             if(appointment.getDoctorID().equals(userId)){
-                LocalDateTime dateTime=parseDateTime(appointment.getDateTime());
 
-                //it will show past appointment records without including appointments with pending and present status
-                if(dateTime!=null&&dateTime.isBefore(currentDateTime)||
-                        (!appointment.getStatus().equalsIgnoreCase("Present")&&
-                        !appointment.getStatus().equalsIgnoreCase("Pending"))) {
+                //it will show appointment records without including appointments with pending and present status
+                if(!appointment.getStatus().equalsIgnoreCase("Present")&&
+                        !appointment.getStatus().equalsIgnoreCase("Pending")) {
 
                     String patientName=customerNames.getOrDefault(appointment.getCustomerID(),"Unknown Patient");
                     String date=appointment.getDateTime().substring(0,appointment.getDateTime().indexOf(" "));

@@ -1025,11 +1025,7 @@ public class MedicineGUI extends javax.swing.JFrame{
                     String completionMessage = "Consultation completed successfully!\n\n" + service.generateSummary();
                     JOptionPane.showMessageDialog(this, completionMessage);
 
-                    if (parent != null) {
-                        parent.setLocationRelativeTo(this);
-                        parent.setVisible(true);
-                    }
-                    setVisible(false);
+                    backToPrevious();
                     return;
                 }
             } catch (IOException e) {

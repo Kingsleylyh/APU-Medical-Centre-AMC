@@ -7,6 +7,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PrescriptionGUI extends javax.swing.JFrame {
     
@@ -51,7 +52,9 @@ public class PrescriptionGUI extends javax.swing.JFrame {
             }
 
             //refresh table once status updated
+            service.refreshData();
             prescriptionTable.refreshData();
+
             table.setModel(prescriptionTable.getModel());
             setupTextAreas();
 
@@ -108,6 +111,11 @@ public class PrescriptionGUI extends javax.swing.JFrame {
             feedbackButton.setEnabled(false);
             return;
         }
+
+        if(!hasOperationHours()){
+            medicineButton.setEnabled(false);
+        }
+
         int medicineColumn = -1;
         int feedbackColumn = -1;
 
@@ -143,8 +151,7 @@ public class PrescriptionGUI extends javax.swing.JFrame {
 
                     String medicineStatus=service.getPrescription(appointmentId);
                     if(!medicineStatus.equalsIgnoreCase("Incomplete")&&
-                        !medicineStatus.isEmpty() &&
-                        !medicineStatus.equalsIgnoreCase("Completed-Consultation Only")){
+                        !medicineStatus.isEmpty()){
                         Appointment updatedAppointment=new Appointment(
                                 appointments.get(i).getAppointmentID(),
                                 appointments.get(i).getCustomerID(),
@@ -163,6 +170,24 @@ public class PrescriptionGUI extends javax.swing.JFrame {
             }
         }catch (IOException e){
             System.err.println("Error updating appointment status: " + e.getMessage());
+        }
+    }
+
+    public boolean hasOperationHours(){
+        try {
+            Map<String, List<OperationSchedule>> hours = DoctorFileManager.loadOperationHours(userId);
+            if (hours == null || hours.isEmpty()) {
+                return false;
+            }
+            for (List<OperationSchedule> schedule : hours.values()) {
+                if (schedule != null && !schedule.isEmpty()) {
+                    return true;
+                }
+            }
+            return false;
+        }catch (IOException e){
+            System.err.println("Error loading operation hours: " + e.getMessage());
+            return false;
         }
     }
 
@@ -458,6 +483,13 @@ public class PrescriptionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_feedbackButtonMouseReleased
 
     private void medicineButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_medicineButtonMouseReleased
+        //doctor has to set up operation hours before doing prescription
+        if(!hasOperationHours()){
+            medicineButton.setEnabled(false);
+            JOptionPane.showMessageDialog(this,"Please setup your operation hours first!\n" +
+                    "Go to 'Profile' -> 'Edit Operation Hours' to set up your operation hours.");
+        }
+
         if(!medicineButton.isEnabled()) {
             return;
         }
