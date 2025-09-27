@@ -1,6 +1,6 @@
 package classes;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public abstract class User {
 	protected String userId;
@@ -9,14 +9,14 @@ public abstract class User {
 	protected String name;
 	protected String email;
 	protected String phone;
-	protected Date dob;
+	protected LocalDate dob;
 	protected String NRIC;
 	protected static boolean isLogin;
 	protected Role role;
 
 	public User() {}
 
-	public User(String userId, String username, String password, String name, String email, String phone, Date dob, String NRIC) {
+	public User(String userId, String username, String password, String name, String email, String phone, LocalDate dob, String NRIC) {
 		this.userId = userId;
 		this.username = username;
 		this.password = password;
@@ -77,11 +77,11 @@ public abstract class User {
 		this.phone = phone;
 	}
 
-	public Date getDob() {
+	public LocalDate getDob() {
 		return dob;
 	}
 
-	public void setDob(Date dob) {
+	public void setDob(LocalDate dob) {
 		this.dob = dob;
 	}
 

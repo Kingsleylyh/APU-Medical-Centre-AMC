@@ -1,14 +1,23 @@
 package classes;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
 public class Doctor extends User {
 	private String specialization;
 	private Role role = Role.DOCTOR;
+	
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	
+	public Doctor() {
+		super();
+		this.role = Role.DOCTOR;
+	}
 
 	public Doctor(String userId, String username, String password, String name, String email, String phone, 
-				Date dob, String NRIC, String specialization) {
+				LocalDate dob, String NRIC, String specialization) {
 		super(userId, username, password, name, email, phone, dob, NRIC);
 		this.specialization = specialization;
 		this.role = Role.DOCTOR;
@@ -25,5 +34,11 @@ public class Doctor extends User {
 
 	public void setSpecialization(String specialization) {
 		this.specialization = specialization;
+	}
+	
+	@Override
+	public String toString() {
+		return userId + "|" + username + "|" + password + "|" + name + "|" + email + "|" + phone + "|"
+			+ dob.format(formatter) + "|" + NRIC + "|" + specialization + "|" + role.getRoleDescription(); 
 	}
 }
