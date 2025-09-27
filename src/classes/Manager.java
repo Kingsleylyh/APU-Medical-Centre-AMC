@@ -1,11 +1,5 @@
 package classes;
 
-import interfaces.FileAction;
-
-/**
- *
- * @author Daryl
- */
 public class Manager extends User {
 	private String department;
 	private Role role = Role.MANAGER;

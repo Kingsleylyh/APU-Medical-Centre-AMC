@@ -1,12 +1,7 @@
 package classes;
 
-import interfaces.FileAction;
 import java.util.List;
 
-/**
- *
- * @author Daryl
- */
 public class Doctor extends User {
 	private String specialization;
 	private Role role = Role.DOCTOR;

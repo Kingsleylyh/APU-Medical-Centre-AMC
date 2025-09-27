@@ -1,9 +1,5 @@
 package classes;
 
-/**
- *
- * @author Daryl
- */
 public abstract class User {
 	protected String id;
 	protected String username;

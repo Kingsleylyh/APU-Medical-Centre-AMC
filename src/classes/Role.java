@@ -1,9 +1,5 @@
 package classes;
 
-/**
- *
- * @author Daryl
- */
 public enum Role {
 	MANAGER("Manager"), 
 	STAFF("Staff"), 

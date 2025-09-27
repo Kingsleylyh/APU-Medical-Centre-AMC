@@ -1,15 +1,8 @@
 package classes;
 
-import interfaces.FileAction;
-
-/**
- *
- * @author Daryl
- */
 public class Customer extends User {
 	private int age;
 	private Role role = Role.CUSTOMER;
-	private String customerFile = "customer.txt";
 
 	public Customer(int age, String id, String username, String password, String name) {
 		super(id, username, password, name);

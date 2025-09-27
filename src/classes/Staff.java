@@ -1,11 +1,5 @@
 package classes;
 
-import interfaces.FileAction;
-
-/**
- *
- * @author Daryl
- */
 public class Staff extends User {
 	private String department;
 	private String team;
