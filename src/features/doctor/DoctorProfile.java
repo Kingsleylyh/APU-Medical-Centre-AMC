@@ -691,6 +691,7 @@ public class DoctorProfile extends javax.swing.JFrame {
         optionsDialog.setTitle("Edit Options");
 
         jPanel10.setBackground(new java.awt.Color(246, 243, 240));
+        jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         emailBtn.setFont(new java.awt.Font("Garamond", 1, 18)); // NOI18N
         emailBtn.setText("Edit Email");
@@ -700,7 +701,7 @@ public class DoctorProfile extends javax.swing.JFrame {
                 emailBtnMouseReleased(evt);
             }
         });
-        jPanel10.add(emailBtn);
+        jPanel10.add(emailBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
 
         nameBtn.setFont(new java.awt.Font("Garamond", 1, 18)); // NOI18N
         nameBtn.setText("Edit Name");
@@ -710,7 +711,7 @@ public class DoctorProfile extends javax.swing.JFrame {
                 nameBtnMouseReleased(evt);
             }
         });
-        jPanel10.add(nameBtn);
+        jPanel10.add(nameBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
 
         usnBtn.setFont(new java.awt.Font("Garamond", 1, 18)); // NOI18N
         usnBtn.setText("Edit Username");
@@ -720,7 +721,7 @@ public class DoctorProfile extends javax.swing.JFrame {
                 usnBtnMouseReleased(evt);
             }
         });
-        jPanel10.add(usnBtn);
+        jPanel10.add(usnBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
 
         pswdBtn.setFont(new java.awt.Font("Garamond", 1, 18)); // NOI18N
         pswdBtn.setText("Edit Password");
@@ -730,7 +731,7 @@ public class DoctorProfile extends javax.swing.JFrame {
                 pswdBtnMouseReleased(evt);
             }
         });
-        jPanel10.add(pswdBtn);
+        jPanel10.add(pswdBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
 
         javax.swing.GroupLayout optionsDialogLayout = new javax.swing.GroupLayout(optionsDialog.getContentPane());
         optionsDialog.getContentPane().setLayout(optionsDialogLayout);
