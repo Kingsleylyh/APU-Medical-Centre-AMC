@@ -85,7 +85,7 @@ public class DoctorProfile extends javax.swing.JFrame {
         jTabbedPane1.addChangeListener(e -> addBlockButton.setEnabled(jTabbedPane1.getSelectedIndex()>=0));
     }
 
-    private void loadOperationHours(){
+    private void loadOperationHours(boolean update){
         try{
             Map<String,List<OperationSchedule>> existingSchedules=DoctorFileManager.loadOperationHours(userId);
             if(!existingSchedules.isEmpty()) {
@@ -110,11 +110,17 @@ public class DoctorProfile extends javax.swing.JFrame {
                 }
             }
             updateCheckbox();
-            updateOperationHoursDisplay();
+            if(update){
+                updateOperationHoursDisplay();
+            }
         }catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error loading operation hours: " + e.getMessage());
         }
 
+    }
+
+    private void loadOperationHours() {
+        loadOperationHours(true);
     }
 
     private boolean validateTimeBlocks() {
@@ -364,7 +370,6 @@ public class DoctorProfile extends javax.swing.JFrame {
             DefaultTableModel model = dayModels.get(day);
             model.setRowCount(0);
         }
-        updateOperationHoursDisplay();
 
     }
 
@@ -1399,10 +1404,16 @@ public class DoctorProfile extends javax.swing.JFrame {
         Date endTime=calendar.getTime();
 
         ((DefaultTableModel)table.getModel()).addRow(new Object[]{startTime, endTime, "❌"});
-        updateOperationHoursDisplay();
     }//GEN-LAST:event_addBlockButtonActionPerformed
 
     private void saveButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseReleased
+        //if no day is selected, show invalid message
+        if (jTabbedPane1.getTabCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Please select at least one day");
+            loadOperationHours(); // Restore original state only for this case
+            return;
+        }
+
         if(validateTimeBlocks()){
             saveOperationHours();
             SwingUtilities.getWindowAncestor(jDialog1).dispose();
@@ -1414,6 +1425,25 @@ public class DoctorProfile extends javax.swing.JFrame {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void cancelButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseReleased
+        //restore original operation hours state (don't update display)
+        jTabbedPane1.removeAll();
+        mondayCb.setSelected(false);
+        tuesdayCb.setSelected(false);
+        wednesdayCb.setSelected(false);
+        thursdayCb.setSelected(false);
+        fridayCb.setSelected(false);
+        saturdayCb.setSelected(false);
+        sundayCb.setSelected(false);
+
+        // Clear all day checkboxes
+        for(String day : days) {
+            DefaultTableModel model = dayModels.get(day);
+            if(model != null) {
+                model.setRowCount(0);
+            }
+        }
+        //reload operation hours from file
+        loadOperationHours(false);
         SwingUtilities.getWindowAncestor(jDialog1).dispose();
     }//GEN-LAST:event_cancelButtonMouseReleased
 
