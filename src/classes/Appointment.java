@@ -9,10 +9,10 @@ public class Appointment {
 	private String doctorName;
 	private String dateTime;
 	private double consultationFee;
-	private Status status;
+	private AppointmentStatus status;
 
 	public Appointment(String appointmentId, String customerId, String customerName, String doctorId, 
-					String doctorName, String dateTime, double consultationFee, Status status) {
+					String doctorName, String dateTime, double consultationFee, AppointmentStatus status) {
 		this.appointmentId = appointmentId;
 		this.customerId = customerId;
 		this.customerName = customerName;
@@ -79,11 +79,11 @@ public class Appointment {
 		this.consultationFee = consultationFee;
 	}
 
-	public Status getStatus() {
+	public AppointmentStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(AppointmentStatus status) {
 		this.status = status;
 	}
 	
@@ -107,10 +107,10 @@ public class Appointment {
 		String rawStatus = parts[7].trim();
 		
 		double consultationFee;
-		Status status;
+		AppointmentStatus status;
 		try {
 			consultationFee = Double.parseDouble(rawConsultationFee);
-			status = Status.valueOf(rawStatus);
+			status = AppointmentStatus.valueOf(rawStatus);
 		} catch (IllegalArgumentException e) {
 			return null; // bad row -> skip
 		} catch (Exception e) {
