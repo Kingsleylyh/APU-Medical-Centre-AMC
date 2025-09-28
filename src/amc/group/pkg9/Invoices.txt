@@ -1,0 +1,3 @@
+InvoiceID | AppointmentID | IssuedBy | IssuedTo | TotalAmount | InvoiceDate | ReceiptNo
+inv001 | app001 | staff001 | cust001 | 70.5 | 2025-10-01 | rcpt001
+inv002 | app002 | staff002 | cust002 | 70.0 | 2025-10-01 | rcpt002

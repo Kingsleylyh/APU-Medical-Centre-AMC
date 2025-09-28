@@ -1,0 +1,4 @@
+CustomerID | Name | Email | Contact
+cust001 | Ali Ahmad | ali@gmail.com | 0112233445
+cust002 | Mei Ling | meiling@yahoo.com | 0189988776
+

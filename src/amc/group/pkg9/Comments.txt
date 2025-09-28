@@ -1,0 +1,4 @@
+CommentID | CustomerID | Date | AppointmentID | Message | Rating 
+com001 | cust001 | 2025-10-01 | app001 | The doctor was very helpful | 5
+com002 | cust002 | 2025-10-02 | app001 | Waiting time too long | 3
+

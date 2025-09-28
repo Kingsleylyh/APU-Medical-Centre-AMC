@@ -1,0 +1,4 @@
+DoctorID | DateTime | Availability
+doc001 | 2025-10-01 09:00 | available
+doc001 | 2025-10-01 10:00 | booked
+doc002 | 2025-10-01 11:00 | available
