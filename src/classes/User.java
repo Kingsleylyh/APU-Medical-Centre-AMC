@@ -13,6 +13,7 @@ public abstract class User {
 	protected String NRIC;
 	protected static boolean isLogin;
 	protected Role role;
+	protected UserStatus userStatus;
 
 	public User() {}
 
@@ -28,6 +29,8 @@ public abstract class User {
 	}
 	
 	abstract public Role getRole();
+	
+	abstract public UserStatus getUserStatus();
 
 	public String getUserId() {
 		return userId;

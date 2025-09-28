@@ -16,17 +16,23 @@ public class Staff extends User {
 	}
 
 	public Staff(String userId, String username, String password, String name, String email, String phone, 
-				LocalDate dob, String NRIC, String position) {
+				LocalDate dob, String NRIC, String position, UserStatus userStatus) {
 		super(userId, username, password, name, email, phone, dob, NRIC);
 		this.position = position;
 		this.role = Role.STAFF;
+		this.userStatus = userStatus;
 	}
 	
 	@Override
 	public Role getRole() {
 		return role;
 	}
-
+	
+	@Override
+	public UserStatus getUserStatus() {
+		return userStatus;
+	}
+	
 	public String getPosition() {
 		return position;
 	}
@@ -38,6 +44,7 @@ public class Staff extends User {
 	@Override
 	public String toString() {
 		return userId + "|" + username + "|" + password + "|" + name + "|" + email + "|" + phone + "|"
-			+ dob.format(formatter) + "|" + NRIC + "|" + position + "|" + role.getRoleDescription();
+			+ dob.format(formatter) + "|" + NRIC + "|" + position + "|" + role.getRoleDescription()
+			+ "|" + userStatus.getUserStatusDescription();
 	}
 }

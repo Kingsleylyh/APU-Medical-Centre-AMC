@@ -16,16 +16,22 @@ public class Customer extends User {
 	}
 	
 	public Customer(String userId, String username, String password, String name,String email, String phone, 
-				LocalDate dob, String NRIC, String address, String emergencyContact) {
+				LocalDate dob, String NRIC, String address, String emergencyContact, UserStatus userStatus) {
 		super(userId, username, password, name, email, phone, dob, NRIC);
 		this.address = address;
 		this.emergencyContact = emergencyContact;
 		this.role = Role.CUSTOMER;
+		this.userStatus = userStatus;
 	}
 	
 	@Override
 	public Role getRole() {
 		return role;
+	}
+	
+	@Override
+	public UserStatus getUserStatus() {
+		return userStatus;
 	}
 
 	public String getAddress() {
@@ -48,6 +54,6 @@ public class Customer extends User {
 	public String toString() {
 		return userId + "|" + username + "|" + password + "|" + name + "|" + email + "|" + phone + "|"
 			+ dob.format(formatter) + "|" + NRIC + "|" + address + "|" + emergencyContact + "|"
-			+ role.getRoleDescription(); 
+			+ role.getRoleDescription() + "|" + userStatus.getUserStatusDescription(); 
 	}
 }

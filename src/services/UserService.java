@@ -4,6 +4,7 @@ import classes.Customer;
 import classes.Doctor;
 import classes.Manager;
 import classes.Staff;
+import classes.UserStatus;
 import interfaces.FileAction;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -63,6 +64,12 @@ public class UserService implements FileAction {
 			while((user = br.readLine()) != null){
 				String[] userData = user.split("\\|");
 				
+				String userStatusStr = userData[userData.length - 1];
+				// Skip deleted users
+				if("Deleted".equals(userStatusStr)) {
+					continue;
+				}
+				// Create user objects based on their role
 				String userId = userData[0];
 				String username = userData[1];
 				String password = userData[2];
@@ -80,26 +87,33 @@ public class UserService implements FileAction {
 					System.err.println("Error parsing date: " + e.getMessage());
 				}
 				
-				String userRole = userData[userData.length - 1];
+				String userRole = userData[userData.length - 2];
+				UserStatus userStatus = UserStatus.valueOf(userStatusStr);
+				
 				switch(userRole){
 					case "Manager" -> {
 						Manager manager = new Manager(userId, username, password, name, email,
-												phone, date, NRIC);
+												phone, date, NRIC, userStatus);
 						managerList.add(manager);
 					}
 					case "Staff" -> {
+						String position = userData[8];
 						Staff staff = new Staff(userId, username, password, name, email,
-										phone, date, NRIC, userData[8]);
+										phone, date, NRIC, position, userStatus);
 						staffList.add(staff);
 					}
 					case "Doctor" -> {
+						String specialization = userData[8];
 						Doctor doctor = new Doctor(userId, username, password, name, email,
-											phone, date, NRIC, userData[8]);
+											phone, date, NRIC, specialization, userStatus);
 						doctorList.add(doctor);
 					}
 					case "Customer" -> {
+						String address = userData[8];
+						String emergencyContact = userData[9];
 						Customer customer = new Customer(userId, username, password, name, email,
-												phone, date, NRIC, userData[8], userData[9]);
+												phone, date, NRIC, address, emergencyContact,
+												userStatus);
 						customerList.add(customer);
 					}
 					default -> System.out.println("Invalid user role");

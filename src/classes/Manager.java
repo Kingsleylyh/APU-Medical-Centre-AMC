@@ -15,9 +15,10 @@ public class Manager extends User {
 	}
 	
 	public Manager(String userId, String username, String password, String name, String email, String phone, 
-				LocalDate dob, String NRIC) {
+				LocalDate dob, String NRIC, UserStatus userStatus) {
 		super(userId, username, password, name, email, phone, dob, NRIC);
 		this.role = Role.MANAGER;
+		this.userStatus = userStatus;
 	}
 	
 	@Override
@@ -26,8 +27,14 @@ public class Manager extends User {
 	}
 	
 	@Override
+	public UserStatus getUserStatus() {
+		return userStatus;
+	}
+	
+	@Override
 	public String toString() {
 		return userId + "|" + username + "|" + password + "|" + name + "|" + email + "|" + phone + "|"
-			+ dob.format(formatter) + "|" + NRIC + "|" + role.getRoleDescription(); 
+			+ dob.format(formatter) + "|" + NRIC + "|" + role.getRoleDescription() + "|" 
+			+ userStatus.getUserStatusDescription(); 
 	}
 }
