@@ -24,10 +24,10 @@ import java.util.List;
  * @author Daryl
  */
 public class UserService implements FileAction {
-	List<Manager> managerList = new ArrayList<>();
-	List<Staff> staffList = new ArrayList<>();
-	List<Doctor> doctorList = new ArrayList<>();
-	List<Customer> customerList = new ArrayList<>();
+	static List<Manager> managerList = new ArrayList<>();
+	static List<Staff> staffList = new ArrayList<>();
+	static List<Doctor> doctorList = new ArrayList<>();
+	static List<Customer> customerList = new ArrayList<>();
 	
 	private final String usersFile = "src/database/users.txt";
 	
@@ -60,7 +60,6 @@ public class UserService implements FileAction {
 			FileReader fr = new FileReader(file);
 			BufferedReader br = new BufferedReader(fr);
 			String user;
-			br.readLine(); // Read and ignore the first line (column names)
 			while((user = br.readLine()) != null){
 				String[] userData = user.split("\\|");
 				
@@ -119,6 +118,8 @@ public class UserService implements FileAction {
 					default -> System.out.println("Invalid user role");
 				}
 			}
+			br.close();
+			fr.close();
 		}
 		catch(IOException e){
 			e.printStackTrace();
@@ -156,5 +157,37 @@ public class UserService implements FileAction {
 			e.printStackTrace();
 		}
 		System.out.println("Users Successfully Saved to File!");
+	}
+
+	public static List<Manager> getManagerList() {
+		return managerList;
+	}
+
+	public static void setManagerList(List<Manager> managerList) {
+		UserService.managerList = managerList;
+	}
+
+	public static List<Staff> getStaffList() {
+		return staffList;
+	}
+
+	public static void setStaffList(List<Staff> staffList) {
+		UserService.staffList = staffList;
+	}
+
+	public static List<Doctor> getDoctorList() {
+		return doctorList;
+	}
+
+	public static void setDoctorList(List<Doctor> doctorList) {
+		UserService.doctorList = doctorList;
+	}
+
+	public static List<Customer> getCustomerList() {
+		return customerList;
+	}
+
+	public static void setCustomerList(List<Customer> customerList) {
+		UserService.customerList = customerList;
 	}
 }

@@ -3,13 +3,13 @@ package classes;
 public class Feedback {
 	private String feedbackId;
 	private String appointmentId;
-	private String givenBy;
+	private String doctorId;
 	private String content;
 
-	public Feedback(String feedbackId, String appointmentId, String givenBy, String content) {
+	public Feedback(String feedbackId, String appointmentId, String doctorId, String content) {
 		this.feedbackId = feedbackId;
 		this.appointmentId = appointmentId;
-		this.givenBy = givenBy;
+		this.doctorId = doctorId;
 		this.content = content;
 	}
 
@@ -29,12 +29,12 @@ public class Feedback {
 		this.appointmentId = appointmentId;
 	}
 
-	public String getGivenBy() {
-		return givenBy;
+	public String getDoctorId() {
+		return doctorId;
 	}
 
-	public void setGivenBy(String givenBy) {
-		this.givenBy = givenBy;
+	public void setDoctorId(String doctorId) {
+		this.doctorId = doctorId;
 	}
 
 	public String getContent() {
@@ -43,5 +43,10 @@ public class Feedback {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	@Override
+	public String toString() {
+		return feedbackId+"|"+appointmentId+"|"+doctorId+"|"+content;
 	}
 }

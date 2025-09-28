@@ -4,23 +4,19 @@ public class Appointment {
 
 	private String appointmentId;
 	private String customerId;
-	private String customerName;
 	private String doctorId;
-	private String doctorName;
 	private String dateTime;
-	private double consultationFee;
-	private AppointmentStatus status;
+	private double appointmentFee;
+	private AppointmentStatus apptStatus;
 
-	public Appointment(String appointmentId, String customerId, String customerName, String doctorId, 
-					String doctorName, String dateTime, double consultationFee, AppointmentStatus status) {
+	public Appointment(String appointmentId, String customerId, String doctorId, String dateTime,
+					double appointmentFee, AppointmentStatus apptStatus) {
 		this.appointmentId = appointmentId;
 		this.customerId = customerId;
-		this.customerName = customerName;
 		this.doctorId = doctorId;
-		this.doctorName = doctorName;
 		this.dateTime = dateTime;
-		this.consultationFee = consultationFee;
-		this.status = status;
+		this.appointmentFee = appointmentFee;
+		this.apptStatus = apptStatus;
 	}
 
 	public String getAppointmentId() {
@@ -39,28 +35,12 @@ public class Appointment {
 		this.customerId = customerId;
 	}
 
-	public String getCustomerName() {
-		return customerName;
-	}
-
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
-
 	public String getDoctorId() {
 		return doctorId;
 	}
 
 	public void setDoctorId(String doctorId) {
 		this.doctorId = doctorId;
-	}
-
-	public String getDoctorName() {
-		return doctorName;
-	}
-
-	public void setDoctorName(String doctorName) {
-		this.doctorName = doctorName;
 	}
 
 	public String getDateTime() {
@@ -71,52 +51,24 @@ public class Appointment {
 		this.dateTime = dateTime;
 	}
 
-	public double getConsultationFee() {
-		return consultationFee;
+	public double getAppointmentFee() {
+		return appointmentFee;
 	}
 
-	public void setConsultationFee(double consultationFee) {
-		this.consultationFee = consultationFee;
+	public void setAppointmentFee(double appointmentFee) {
+		this.appointmentFee = appointmentFee;
 	}
 
-	public AppointmentStatus getStatus() {
-		return status;
+	public AppointmentStatus getApptStatus() {
+		return apptStatus;
 	}
 
-	public void setStatus(AppointmentStatus status) {
-		this.status = status;
+	public void setApptStatus(AppointmentStatus apptStatus) {
+		this.apptStatus = apptStatus;
 	}
 	
 	@Override
-	public String toString() {
-		return appointmentId + "," + customerId + "," + customerName + "," + doctorId + "," + doctorName + "," 
-				+ dateTime + "," + consultationFee + "," + status;
-	}
-
-	public static Appointment fromString(String line) {
-		String[] parts = line.split(",", -1);
-		if (parts.length != 6) return null;
-
-		String apptId = parts[0].trim();
-		String custId = parts[1].trim();
-		String custName = parts[2].trim();
-		String doctorId = parts[3].trim();
-		String doctorName = parts[4].trim();
-		String dateTime   = parts[5].trim();
-		String rawConsultationFee   = parts[6].trim();
-		String rawStatus = parts[7].trim();
-		
-		double consultationFee;
-		AppointmentStatus status;
-		try {
-			consultationFee = Double.parseDouble(rawConsultationFee);
-			status = AppointmentStatus.valueOf(rawStatus);
-		} catch (IllegalArgumentException e) {
-			return null; // bad row -> skip
-		} catch (Exception e) {
-			return null;
-		}
-
-		return new Appointment(apptId, custId, custName, doctorId, doctorName, dateTime, consultationFee, status);
+	public String toString(){
+		return appointmentId+"|"+customerId+"|"+doctorId+"|"+dateTime+"|"+apptStatus+"|"+appointmentFee;
 	}
 }

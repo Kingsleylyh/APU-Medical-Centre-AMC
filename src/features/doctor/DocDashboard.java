@@ -11,7 +11,7 @@ public class DocDashboard extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DocDashboard.class.getName());
     private String userId;
-    private List<User> users=new ArrayList<>();
+//    private List<User> users=new ArrayList<>();
 
     public DocDashboard(String username) {
         
@@ -20,10 +20,10 @@ public class DocDashboard extends javax.swing.JFrame {
         buttonGlow(jButton2, Color.black,Color.decode("#7dbff8"));
         buttonGlow(jButton3, Color.black,Color.decode("#7dbff8"));
 
-        loadDoctorName(username);
+//        loadDoctorName(username);
     }
 
-    private void loadDoctorName(String username) {
+/*    private void loadDoctorName(String username) {
         boolean found=false;
         try {
             users=DoctorFileManager.loadUsers();
@@ -43,7 +43,7 @@ public class DocDashboard extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error loading doctor name: " + e.getMessage());
         }
     }
-
+*/
 
     public static void buttonGlow(javax.swing.JButton button, java.awt.Color borderColor, java.awt.Color buttonColor){
         final javax.swing.border.Border originalBorder = button.getBorder();

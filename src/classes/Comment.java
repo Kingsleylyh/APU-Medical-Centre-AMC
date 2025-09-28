@@ -1,57 +1,62 @@
 package classes;
 
 public class Comment {
-	private String commentId;
-	private String appointmentId;
-	private String commenterId;
-	private String message;
-	private int rating;
+	public enum Recipient { STAFF, DOCTOR }
 
-	public Comment(String commentId, String appointmentId, String commenterId, String message, int rating) {
-		this.commentId = commentId;
-		this.appointmentId = appointmentId;
-		this.commenterId = commenterId;
-		this.message = message;
-		this.rating = rating;
+	private String customerId;
+	private String text;
+	private Recipient to;
+	private String author;
+
+	public Comment(String id, String text, Recipient to, String author) {
+		this.customerId = id;
+		this.text = text;
+		this.to = to;
+		this.author = author;
 	}
 
-	public String getCommentId() {
-		return commentId;
+	public String getId() {
+		return customerId;
 	}
 
-	public void setCommentId(String commentId) {
-		this.commentId = commentId;
+	public void setId(String id) {
+		this.customerId = id;
 	}
 
-	public String getAppointmentId() {
-		return appointmentId;
+	public String getText() {
+		return text;
 	}
 
-	public void setAppointmentId(String appointmentId) {
-		this.appointmentId = appointmentId;
+	public void setText(String text) {
+		this.text = text;
 	}
 
-	public String getCommenterId() {
-		return commenterId;
+	public Recipient getTo() {
+		return to;
 	}
 
-	public void setCommenterId(String commenterId) {
-		this.commenterId = commenterId;
+	public void setTo(Recipient to) {
+		this.to = to;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getAuthor() {
+		return author;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
-	public int getRating() {
-		return rating;
+	@Override
+	public String toString() {
+		String safe = text == null ? "" : text.replace(",", "‚");
+		return customerId + "|" + author + "|" + to.name() + "|" + safe;
 	}
 
-	public void setRating(int rating) {
-		this.rating = rating;
+	public static Comment fromString(String line) {
+		String[] p = line.split("\\|", -1);
+		if (p.length < 4) return null;
+		String restored = p[3].replace("‚", ",");
+		return new Comment(p[0], restored, Recipient.valueOf(p[2]), p[1]);
 	}
 }

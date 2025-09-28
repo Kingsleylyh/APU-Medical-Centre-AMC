@@ -1,5 +1,9 @@
 package classes;
 
+import java.io.IOException;
+import java.util.List;
+import services.NotificationService;
+
 public class Notification {
 	private String notificationId;
 	private String userId;
@@ -53,5 +57,27 @@ public class Notification {
 
 	public void setSentDate(String sentDate) {
 		this.sentDate = sentDate;
+	}
+	
+	public static String getNextID(){
+		try {
+			int max=0;
+
+			List<Notification> notifications = NotificationService.loadNotifications();
+			for(Notification notification : notifications) {
+				int id = Integer.parseInt(notification.getNotificationId().substring(1));
+				if (id > max) {
+					max = id;
+				}
+			}
+			return String.format("N%03d",max+1);
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public String toString(){
+		return notificationId+"|"+userId+"|"+title+"|"+message+"|"+sentDate;
 	}
 }
