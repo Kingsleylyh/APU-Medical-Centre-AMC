@@ -1,24 +1,55 @@
 package amc.group.pkg9;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.io.*;
 
+/**
+ * @author TAI
+ */
 public class PaymentMethodGUI extends javax.swing.JFrame {
-    private String invoiceID;
 
-    public PaymentMethodGUI(String invoiceID) {
-        this.invoiceID = invoiceID;
+    private String appointmentID;
+    private DefaultTableModel summary;
+
+    public PaymentMethodGUI(String appointmentID, DefaultTableModel summary) {
+        this.appointmentID = appointmentID;
+        this.summary = summary;
         initComponents();
         setLocationRelativeTo(null);
     }
 
+    // 🔎 Find the matching invoiceID in Invoices.txt
+    private String findInvoiceID(String appointmentID) {
+        File file = new File("C:\\Users\\TAI KOK WAI\\Documents\\Java Project\\APU-Medical-Centre-AMC\\src\\amc\\group\\pkg9\\Invoices.txt");
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split("\\s*\\|\\s*");
+                if (parts.length >= 2 && parts[1].equalsIgnoreCase(appointmentID)) {
+                    return parts[0]; // return InvoiceID
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error reading Invoices.txt: " + e.getMessage(),
+                    "File Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return null;
+    }
+
+    // Handle payment method click
     private void proceedToInvoice(String method) {
-//        InvoiceGUI invoiceGUI = new InvoiceGUI(invoiceID, method, null);
-//        invoiceGUI.setVisible(true);
-//        this.dispose();
-            System.out.println("DEBUG invoiceID passed to InvoiceGUI: " + invoiceID); // 👈 add this
-            InvoiceGUI invoiceGUI = new InvoiceGUI(invoiceID.trim(), method);
+        String invoiceID = findInvoiceID(appointmentID);
+        if (invoiceID != null) {
+            InvoiceGUI invoiceGUI = new InvoiceGUI(invoiceID, method);
             invoiceGUI.setVisible(true);
             this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "No invoice found for appointment " + appointmentID,
+                    "Invoice Not Found",
+                    JOptionPane.WARNING_MESSAGE);
+        }
     }
 
 
@@ -124,7 +155,7 @@ public class PaymentMethodGUI extends javax.swing.JFrame {
 
     public static void main(String args[]) {
 //        java.awt.EventQueue.invokeLater(() -> new PaymentMethodGUI("APT001", null).setVisible(true));
-            new PaymentMethodGUI("inv001").setVisible(true);
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

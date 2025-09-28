@@ -7,69 +7,139 @@ public class InvoiceGUI extends javax.swing.JFrame {
     private String invoiceID;
     private String paymentMethod;
 
-    // ✅ Constructor: only needs invoiceID + paymentMethod
     public InvoiceGUI(String invoiceID, String method) {
         this.invoiceID = invoiceID;
         this.paymentMethod = method;
         initComponents();
         setLocationRelativeTo(null);
-
-        loadInvoice(); // ✅ Load invoice from file
+        loadInvoice();
     }
 
-    // ✅ Reads Invoices.txt and finds only the matching invoiceID
     private void loadInvoice() {
-        File file = new File("src/amc/group/pkg9/Invoices.txt");
+        System.out.println("DEBUG: Entered loadInvoice()");
+        System.out.println("DEBUG: Looking for invoiceID = " + invoiceID);
 
-        if (!file.exists()) {
+        File invoicesFile = new File("src/amc/group/pkg9/Invoices.txt");
+        if (!invoicesFile.exists()) {
             JOptionPane.showMessageDialog(this,
-                    "Invoices.txt not found:\n" + file.getAbsolutePath(),
+                    "Invoices.txt not found:\n" + invoicesFile.getAbsolutePath(),
                     "File Not Found", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        String foundAppointmentID = null;
+
+        // Step 1: Read Invoices.txt
+        try (BufferedReader br = new BufferedReader(new FileReader(invoicesFile))) {
             String line;
             boolean firstLine = true;
-
             while ((line = br.readLine()) != null) {
-                if (firstLine) {
-                    firstLine = false; // skip header
-                    continue;
-                }
+                if (firstLine) { firstLine = false; continue; }
+                if (line.trim().isEmpty()) continue;
+
+                System.out.println("DEBUG: Checking line = " + line);
 
                 String[] parts = line.split("\\s*\\|\\s*");
+                if (parts.length >= 2) {
+                    String inv = parts[0].trim();
+                    System.out.println("DEBUG: Comparing file invoiceID = " + inv + " with " + invoiceID);
 
-                // ✅ match invoiceID only
-                if (parts.length >= 7 && parts[0].trim().equalsIgnoreCase(invoiceID.trim())) {
-                    jLabel3.setText(parts[0]);   // Invoice ID
-                    jLabel5.setText(parts[4]);   // Consultation Fee
-                    jLabel7.setText("20.00");    // Medicine (fixed placeholder)
-                    
-                    // Subtotal = consultation + medicine
-                    double consultation = Double.parseDouble(parts[4]);
-                    double medicine = 20.0;
-                    double subtotal = consultation + medicine;
-                    jLabel9.setText(String.format("%.2f", subtotal));
+                    if (inv.equalsIgnoreCase(invoiceID.trim())) {
+                        jLabel3.setText(inv);  // InvoiceID only
+                        System.out.println("DEBUG: jLabel3 set to " + inv);
 
-                    // Tax 16%
-                    double tax = subtotal * 0.16;
-                    jLabel11.setText(String.format("%.2f", tax));
-
-                    // Total
-                    double total = subtotal + tax;
-                    jLabel13.setText(String.format("%.2f", total));
-
-                    // Payment Method
-                    jLabel15.setText(paymentMethod);
-
-                    break;
+                        foundAppointmentID = parts[1].trim();
+                        break;
+                    }
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             JOptionPane.showMessageDialog(this,
-                    "Error reading Invoices.txt:\n" + e.getMessage(),
+                    "Error reading Invoices.txt: " + e.getMessage(),
                     "Read Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (foundAppointmentID == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Invoice ID " + invoiceID + " not found in Invoices.txt",
+                    "Not Found", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Step 2: Read PrescriptionAmount.txt
+        File prescFile = new File("src/amc/group/pkg9/PrescriptionAmount.txt");
+        if (!prescFile.exists()) {
+            JOptionPane.showMessageDialog(this,
+                    "PrescriptionAmount.txt not found:\n" + prescFile.getAbsolutePath(),
+                    "File Not Found", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String consultationStr = null;
+        String medicineStr = null;
+        try (BufferedReader br = new BufferedReader(new FileReader(prescFile))) {
+            String line;
+            boolean firstLine = true;
+            while ((line = br.readLine()) != null) {
+                if (firstLine) { firstLine = false; continue; }
+                if (line.trim().isEmpty()) continue;
+
+                String[] parts = line.split("\\s*\\|\\s*");
+                if (parts.length >= 4) {
+                    String appt = parts[1].trim();
+                    if (appt.equalsIgnoreCase(foundAppointmentID)) {
+                        consultationStr = parts[2].trim();
+                        medicineStr = parts[3].trim();
+                        System.out.println("DEBUG: Found appointment " + appt +
+                                " => consultation=" + consultationStr +
+                                " medicine=" + medicineStr);
+                        break;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error reading PrescriptionAmount.txt: " + e.getMessage(),
+                    "Read Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (consultationStr == null || medicineStr == null) {
+            JOptionPane.showMessageDialog(this,
+                    "No prescription record found for AppointmentID: " + foundAppointmentID,
+                    "Not Found", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Step 3: Compute amounts
+        double consultation = parseDoubleSafe(consultationStr, 0.0);
+        double medicine = parseDoubleSafe(medicineStr, 0.0);
+        double subtotal = consultation + medicine;
+        double tax = subtotal * 0.16;
+        double total = subtotal + tax;
+
+        jLabel5.setText(String.format("%.2f", consultation)); // ConsultationFee
+        jLabel7.setText(String.format("%.2f", medicine));     // MedicineCharges
+        jLabel9.setText(String.format("%.2f", subtotal));     // Subtotal
+        jLabel11.setText(String.format("%.2f", tax));         // Tax
+        jLabel13.setText(String.format("%.2f", total));       // Total
+        jLabel15.setText(paymentMethod != null ? paymentMethod : "N/A"); // Payment Method
+
+        System.out.println("DEBUG: jLabel5 consultation=" + jLabel5.getText());
+        System.out.println("DEBUG: jLabel7 medicine=" + jLabel7.getText());
+        System.out.println("DEBUG: jLabel9 subtotal=" + jLabel9.getText());
+        System.out.println("DEBUG: jLabel11 tax=" + jLabel11.getText());
+        System.out.println("DEBUG: jLabel13 total=" + jLabel13.getText());
+        System.out.println("DEBUG: jLabel15 paymentMethod=" + jLabel15.getText());
+    }
+
+    private double parseDoubleSafe(String s, double defaultValue) {
+        if (s == null) return defaultValue;
+        try {
+            return Double.parseDouble(s.trim());
+        } catch (NumberFormatException e) {
+            return defaultValue;
         }
     }
 
@@ -317,7 +387,7 @@ public class InvoiceGUI extends javax.swing.JFrame {
 
         /* Create and display the form */
 //       java.awt.EventQueue.invokeLater(() -> new InvoiceGUI("APT001", "Cash", null).setVisible(true)
-        java.awt.EventQueue.invokeLater(() -> new InvoiceGUI("inv001", "Cash").setVisible(true));
+//        java.awt.EventQueue.invokeLater(() -> new InvoiceGUI("inv001", "Cash").setVisible(true));
 
     }
 

@@ -14,16 +14,16 @@ public class StaffPaymentSummaryGUI extends javax.swing.JFrame {
     private DefaultTableModel summary;
 
     public StaffPaymentSummaryGUI(String appointmentID) {
-    this.appointmentID = appointmentID;
+        this.appointmentID = appointmentID;
 
-    // FIX: initialize table model first
-    summary = new DefaultTableModel();
+        // Initialize table model first
+        summary = new DefaultTableModel();
 
-    initComponents(); // drag-and-drop layout
-    setLocationRelativeTo(null);
-    initTable();
-    loadPaymentSummary();
-}
+        initComponents(); 
+        setLocationRelativeTo(null);
+        initTable();
+        loadPaymentSummary();
+    }
 
     // Initialize table model with headers
     private void initTable() {
@@ -33,41 +33,39 @@ public class StaffPaymentSummaryGUI extends javax.swing.JFrame {
     }
 
     // Load payment info into table
-private void loadPaymentSummary() {
-    // Use absolute path you specified
-    File file = new File("C:\\Users\\TAI KOK WAI\\Documents\\Java Project\\APU-Medical-Centre-AMC\\src\\amc\\group\\pkg9\\PrescriptionAmount.txt");
-    
-    if (!file.exists()) {
-        JOptionPane.showMessageDialog(this, 
-            "PrescriptionAmount.txt not found at:\n" + file.getAbsolutePath(),
-            "File Not Found", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+    private void loadPaymentSummary() {
+        File file = new File("C:\\Users\\TAI KOK WAI\\Documents\\Java Project\\APU-Medical-Centre-AMC\\src\\amc\\group\\pkg9\\PrescriptionAmount.txt");
 
-    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-        String line;
-        boolean found = false;
-        while ((line = br.readLine()) != null) {
-            // Split using | as delimiter, with trimming
-            String[] parts = line.split("\\s*\\|\\s*");
-            if (parts.length >= 5 && parts[1].equals(appointmentID)) {
-                summary.addRow(parts);
-                found = true;
-                break; // stop after first match
+        if (!file.exists()) {
+            JOptionPane.showMessageDialog(this,
+                "PrescriptionAmount.txt not found at:\n" + file.getAbsolutePath(),
+                "File Not Found", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            boolean found = false;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split("\\s*\\|\\s*");
+                if (parts.length >= 5 && parts[1].equals(appointmentID)) {
+                    summary.addRow(parts);
+                    found = true;
+                    break; // stop after first match
+                }
             }
-        }
 
-        if (!found) {
-            JOptionPane.showMessageDialog(this, 
-                "No payment info found for Appointment ID: " + appointmentID,
-                "Info", JOptionPane.INFORMATION_MESSAGE);
+            if (!found) {
+                JOptionPane.showMessageDialog(this,
+                    "No payment info found for Appointment ID: " + appointmentID,
+                    "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this,
+                "Error reading PrescriptionAmount.txt:\n" + e.getMessage(),
+                "Read Error", JOptionPane.ERROR_MESSAGE);
         }
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, 
-            "Error reading PrescriptionAmount.txt:\n" + e.getMessage(),
-            "Read Error", JOptionPane.ERROR_MESSAGE);
     }
-}
 
 
 
@@ -204,27 +202,26 @@ private void loadPaymentSummary() {
 //        }
 
         int selectedRow = jTable1.getSelectedRow();
-    if (selectedRow == -1) {
-        JOptionPane.showMessageDialog(this, "Please select a row first!");
-        return;
-    }
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a row first!");
+            return;
+        }
 
-    // ✅ Extract InvoiceID from column 0
-    String invoiceID = jTable1.getValueAt(selectedRow, 0).toString().trim();
+        String invoiceID = jTable1.getValueAt(selectedRow, 0).toString().trim();
 
-    int confirm = JOptionPane.showConfirmDialog(
-        this,
-        "Confirm payment for Invoice ID: " + invoiceID + "?",
-        "Confirm Payment",
-        JOptionPane.YES_NO_OPTION
-    );
+        int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Confirm payment for Invoice ID: " + invoiceID + "?",
+            "Confirm Payment",
+            JOptionPane.YES_NO_OPTION
+        );
 
-    if (confirm == JOptionPane.YES_OPTION) {
-        // ✅ Pass invoiceID, not summary
-        PaymentMethodGUI paymentGUI = new PaymentMethodGUI(invoiceID);
-        paymentGUI.setVisible(true);
-        this.dispose();
-    }
+        if (confirm == JOptionPane.YES_OPTION) {
+            // ✅ Pass appointmentID + summary (not invoiceID)
+            PaymentMethodGUI paymentGUI = new PaymentMethodGUI(appointmentID, summary);
+            paymentGUI.setVisible(true);
+            this.dispose();
+        }             
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
