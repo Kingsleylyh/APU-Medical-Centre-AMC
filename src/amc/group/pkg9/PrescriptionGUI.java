@@ -455,7 +455,7 @@ public class PrescriptionGUI extends javax.swing.JFrame {
         feedbackButton.setBackground(Color.decode("#19408D").darker());
         int choice=JOptionPane.showConfirmDialog(null,feedbackPanel,"Feedback",JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
         if(choice==JOptionPane.OK_OPTION){
-            String feedbackContent=feedbackTextArea.getText();
+            String feedbackContent=feedbackTextArea.getText().trim();
             String appointmentId=(String)table.getValueAt(table.getSelectedRow(),0);
             String feedbackId=prescriptionTable.getNextFeedbackId();
 
