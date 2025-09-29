@@ -205,11 +205,11 @@ public class DoctorProfileValidation {
         if(name==null||name.isEmpty()){
             return 0; //empty input
         }
-        else if(!name.matches("^[\\p{L}\\p{M}](?:[\\p{L}\\p{M} .’'\\-/]*[\\p{L}\\p{M}])?$")){
-            return 1; //name contains invalid symbols (@ # $ % ^ & * ( ) _ + = { } [ ] \ | : ; " < > , ? and emoji)
-        }
         else if(name.matches(".*\\d.*")){
             return 2; //name contains digit
+        }
+        else if(!name.matches("^[\\p{L}\\p{M}](?:[\\p{L}\\p{M} .’'\\-/]*[\\p{L}\\p{M}])?$")){
+            return 1; //name contains invalid symbols (@ # $ % ^ & * ( ) _ + = { } [ ] \ | : ; " < > , ? and emoji)
         }
         else if(name.equalsIgnoreCase(doctorProfile.getName())){
             return 3; //same as original name
