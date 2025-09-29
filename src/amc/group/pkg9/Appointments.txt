@@ -1,3 +1,3 @@
-AppointmentID | CustomerID | DoctorID | DateTime | Status 
-app001 | cust001 | doc001 | 2025-10-01 09:00 | booked
-app002 | cust002 | doc002 | 2025-11-11 09:00 | booked
+AppointmentID | CustomerID | DoctorID | DateTime | Status
+app001 | U001 | U001 | 2025-10-01 09:00 | booked
+app002 | U002 | U002 | 2025-10-02 00:00 | not book

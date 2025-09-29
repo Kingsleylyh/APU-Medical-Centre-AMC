@@ -1,4 +1,0 @@
-DoctorID | Name | Specialty
-doc001 | Dr. Tan Wei | Cardiologist
-doc002 | Dr. Kumar | General Practitioner
-

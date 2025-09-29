@@ -4,6 +4,12 @@
  */
 package amc.group.pkg9;
 
+import java.awt.Color;
+import java.io.*;
+import javax.swing.JOptionPane;
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  *
  * @author TAI KOK WAI
@@ -11,13 +17,19 @@ package amc.group.pkg9;
 public class StaffAppointmentChoiceGUI extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(StaffAppointmentChoiceGUI.class.getName());
-
+    private String loggedInUser;
     /**
      * Creates new form AppointmentChoiceGUI
      */
     public StaffAppointmentChoiceGUI() {
         initComponents();
         this.getContentPane().setBackground(new java.awt.Color(233, 226, 219));
+    }
+    
+    public StaffAppointmentChoiceGUI (String loggedInUser) {
+        this.loggedInUser = loggedInUser;
+        initComponents();
+        this.getContentPane().setBackground(new Color(233, 226, 219));
     }
 
     /**
@@ -98,7 +110,14 @@ public class StaffAppointmentChoiceGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        dispose();
+        this.setVisible(false);
+        // return to staff dashboard if possible
+        if (this.loggedInUser != null && !this.loggedInUser.isEmpty()) {
+            new StaffDashboardGUI(this.loggedInUser).setVisible(true);
+        } else {
+            new StaffDashboardGUI(loggedInUser).setVisible(true); // fallback
+        }
+//        dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
@@ -123,9 +142,9 @@ public class StaffAppointmentChoiceGUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new StaffAppointmentChoiceGUI().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> {new StaffAppointmentChoiceGUI().setVisible(true);
+    });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

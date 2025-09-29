@@ -1,0 +1,3 @@
+UserID | Username | Name | Email | Password | Role | DOB | Phone | NRIC | Created_at
+U001 | staff1 | Alice Staff | alice@gmail.com | pass123 | staff | 1-1-1990 | 0123456789 | 900101-01-1234 | 29-9-2025 18:00:00U002|1|1|1|1|1|1|1|1|2025-09-29 21:30:01
+U002|1|1|11|1|1|1|1|1|2025-09-29 21:37:19

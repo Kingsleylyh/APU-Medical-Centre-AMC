@@ -13,7 +13,7 @@ import java.util.List;
 public class StaffCheckCommentGUI extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(StaffCheckCommentGUI.class.getName());
-
+    private String loggedInUser;
     // Table data storage (to access message + rating later)
     private List<String[]> commentsData = new ArrayList<>();
 
@@ -22,6 +22,14 @@ public class StaffCheckCommentGUI extends javax.swing.JFrame {
     private String[] columnName = {"Comment ID", "Customer ID", "Date", "Appointment ID"};
 
     public StaffCheckCommentGUI() {
+        CheckComment.setColumnIdentifiers(columnName);
+        initComponents();
+        setLocationRelativeTo(null);
+        loadComments();
+    }
+    
+    public StaffCheckCommentGUI(String loggedInUser) {
+        this.loggedInUser = loggedInUser;
         CheckComment.setColumnIdentifiers(columnName);
         initComponents();
         setLocationRelativeTo(null);
@@ -146,7 +154,13 @@ public class StaffCheckCommentGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        this.dispose();
+        this.setVisible(false);
+        // return to staff dashboard if possible
+        if (this.loggedInUser != null && !this.loggedInUser.isEmpty()) {
+            new StaffDashboardGUI(this.loggedInUser).setVisible(true);
+        } else {
+            new StaffDashboardGUI(loggedInUser).setVisible(true); // fallback
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

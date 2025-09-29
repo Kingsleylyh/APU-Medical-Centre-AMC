@@ -2,15 +2,51 @@ package amc.group.pkg9;
 
 import java.awt.Color;
 import javax.swing.JOptionPane;
+import java.util.List;
+import java.util.ArrayList;
 
 public class StaffDashboardGUI extends javax.swing.JFrame {
     
     private String loggedInUser;
 
-    public StaffDashboardGUI(String user) {
+//    public StaffDashboardGUI(String userId) {
+//        // Validate userId against user.txt (accept either userId or username)
+//        List<User> users = User.loadUsers("user.txt");
+//        User currentUser = null;
+//        for (User u : users) {
+//            if (u.getUserId().equalsIgnoreCase(userId) || u.getUsername().equalsIgnoreCase(userId)) {
+//                currentUser = u;
+//                break;
+//            }
+//        }
+//
+//        if (currentUser == null || !"staff".equalsIgnoreCase(currentUser.getRole())) {
+//            JOptionPane.showMessageDialog(null, "Access denied! Only staff can login.", "Access Denied", JOptionPane.ERROR_MESSAGE);
+//            // Stop construction if access denied
+//            return;
+//        }
+//
+//        this.loggedInUser = currentUser.getUserId();
+//        initComponents();
+//        this.getContentPane().setBackground(new Color(233, 226, 219)); // background color
+//        setupLabels();
+//    }
+//
+//    private void setupLabels() {
+//        jLabel1.setText(loggedInUser + " Dashboard");
+//    }
+
+
+    public StaffDashboardGUI() {
         initComponents();
         this.getContentPane().setBackground(new Color(233, 226, 219)); // background color
-        this.loggedInUser = user;
+        setupLabels();
+    }
+    
+    public StaffDashboardGUI(String loggedInUser) {
+        this.loggedInUser = "U001";
+        initComponents();
+        this.getContentPane().setBackground(new Color(233, 226, 219)); // background color
         setupLabels();
     }
 
@@ -110,28 +146,33 @@ public class StaffDashboardGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new StaffAddNewCustomerGUI().setVisible(true);
+        // Open Add Customer and pass the loggedInUser id
+        new StaffAddNewCustomerGUI(this.loggedInUser).setVisible(true);
         this.dispose();
+//        new StaffAddNewCustomerGUI().setVisible(true);
+//        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new StaffAppointmentChoiceGUI().setVisible(true);
+        new StaffAppointmentChoiceGUI(this.loggedInUser).setVisible(true);
         this.dispose();
+//        new StaffAppointmentChoiceGUI().setVisible(true);
+//        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        new StaffCheckCommentGUI().setVisible(true); //(loggedInUser) <- original  我从（）去掉loggedInUser了 (same as other button)
+        new StaffCheckCommentGUI(this.loggedInUser).setVisible(true); //(loggedInUser) <- original  我从（）去掉loggedInUser了 (same as other button)
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+//        JOptionPane.showMessageDialog(this, "User ID: " + loggedInUser);
         JOptionPane.showMessageDialog(this, "User ID: " + loggedInUser);
-
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    public static void main(String args[]) {
+    public void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            new StaffDashboardGUI("staff001").setVisible(true);
+            new StaffDashboardGUI("U001").setVisible(true);
         });
     
         /* Set the Nimbus look and feel */

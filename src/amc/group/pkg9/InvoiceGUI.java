@@ -361,7 +361,16 @@ public class InvoiceGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       this.dispose();
+//    this.setVisible(false);
+//    new StaffDashboardGUI().setVisible(true);
+    
+    
+//    // Close current InvoiceGUI
+    this.dispose();
+//
+//    // Open StaffDashboardGUI
+//    StaffDashboardGUI dashboard = new StaffDashboardGUI();
+//    dashboard.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

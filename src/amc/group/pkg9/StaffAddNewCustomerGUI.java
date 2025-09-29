@@ -3,6 +3,11 @@ package amc.group.pkg9;
 import java.awt.Color;
 import java.io.*;
 import javax.swing.JOptionPane;
+import java.util.List;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  *
  * @author TAI KOK WAI
@@ -10,36 +15,65 @@ import javax.swing.JOptionPane;
 public class StaffAddNewCustomerGUI extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(StaffAddNewCustomerGUI.class.getName());
+    private String loggedInUser; // store userId of staff who opened this form
 
     public StaffAddNewCustomerGUI() {
         initComponents();
         this.getContentPane().setBackground(new Color(233, 226, 219));
     }
 
-    private String generateUserID() {
-        String lastId = null;
-        try (BufferedReader br = new BufferedReader(new FileReader("UserData.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (!line.trim().isEmpty() && !line.startsWith("UserID")) { 
-                    lastId = line.split("\\|")[0].trim(); // Get first column (UserID)
-                }
-            }
-        } catch (IOException e) {
-            // file might not exist yet, ignore
-        }
-
-        if (lastId == null) {
-            return "U001";
-        }
-
-        try {
-            int num = Integer.parseInt(lastId.substring(1)); // remove "U"
-            return String.format("U%03d", num + 1);
-        } catch (NumberFormatException e) {
-            return "U001"; // fallback
-        }
+    // overloaded constructor to receive loggedInUser id
+    public StaffAddNewCustomerGUI(String loggedInUser) {
+        this.loggedInUser = loggedInUser;
+        initComponents();
+        this.getContentPane().setBackground(new Color(233, 226, 219));
     }
+
+//package amc.group.pkg9;
+//
+//import java.awt.Color;
+//import java.io.*;
+//import javax.swing.JOptionPane;
+//import java.util.List;
+//import java.util.ArrayList;
+///**
+// *
+// * @author TAI KOK WAI
+// */
+//public class StaffAddNewCustomerGUI extends javax.swing.JFrame {
+//    
+//    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(StaffAddNewCustomerGUI.class.getName());
+//
+//    public StaffAddNewCustomerGUI() {
+//        this.loggedInUser = loggedInUser;
+//        initComponents();
+//        this.getContentPane().setBackground(new Color(233, 226, 219));
+//    }
+//
+//    private String generateUserID() {
+//        String lastId = null;
+//        try (BufferedReader br = new BufferedReader(new FileReader("UserData.txt"))) {
+//            String line;
+//            while ((line = br.readLine()) != null) {
+//                if (!line.trim().isEmpty() && !line.startsWith("UserID")) { 
+//                    lastId = line.split("\\|")[0].trim(); // Get first column (UserID)
+//                }
+//            }
+//        } catch (IOException e) {
+//            // file might not exist yet, ignore
+//        }
+//
+//        if (lastId == null) {
+//            return "U001";
+//        }
+//
+//        try {
+//            int num = Integer.parseInt(lastId.substring(1)); // remove "U"
+//            return String.format("U%03d", num + 1);
+//        } catch (NumberFormatException e) {
+//            return "U001"; // fallback
+//        }
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -67,6 +101,8 @@ public class StaffAddNewCustomerGUI extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jTextField8 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -106,13 +142,22 @@ public class StaffAddNewCustomerGUI extends javax.swing.JFrame {
             }
         });
 
+        jLabel9.setText("NRIC : ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jButton1)
+                .addGap(36, 36, 36)
+                .addComponent(jButton2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel9)
                     .addComponent(jLabel6)
                     .addComponent(jLabel5)
                     .addComponent(jLabel4)
@@ -122,20 +167,15 @@ public class StaffAddNewCustomerGUI extends javax.swing.JFrame {
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField5)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
                     .addComponent(jTextField6)
                     .addComponent(jTextField7, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jTextField4)
                     .addComponent(jTextField3)
                     .addComponent(jTextField2)
-                    .addComponent(jTextField1))
+                    .addComponent(jTextField1)
+                    .addComponent(jTextField8))
                 .addGap(20, 20, 20))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(jButton1)
-                .addGap(31, 31, 31)
-                .addComponent(jButton2)
-                .addContainerGap(47, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,11 +208,15 @@ public class StaffAddNewCustomerGUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
                     .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -189,7 +233,7 @@ public class StaffAddNewCustomerGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -200,51 +244,167 @@ public class StaffAddNewCustomerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        List<User> users = User.loadUsers();
+        String userId = User.generateNextUserId(users);
+
         String username = jTextField1.getText().trim();
         String name = jTextField2.getText().trim();
         String email = jTextField3.getText().trim();
         String password = jTextField4.getText().trim();
         String role = jTextField5.getText().trim();
         String dob = jTextField6.getText().trim();
-        String contact = jTextField7.getText().trim();
+        String phone = jTextField7.getText().trim();
+        String nric = jTextField8.getText().trim();
+        String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        if (username.isEmpty() || name.isEmpty() || email.isEmpty() ||
-            password.isEmpty() || role.isEmpty() || dob.isEmpty() || contact.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "All fields must be filled!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        User newUser = new User(userId, username, name, email, password, role, dob, phone, nric, createdAt);
 
-        String userId = generateUserID();
+        // Append directly
+        User.appendUser(newUser);
 
-//        try (FileWriter fw = new FileWriter("UserData.txt", true);
-        try (FileWriter fw = new FileWriter("C:\\Users\\TAI KOK WAI\\Documents\\Java Project\\APU-Medical-Centre-AMC\\src\\amc\\group\\pkg9\\UserData.txt",
-    true);             
-             BufferedWriter bw = new BufferedWriter(fw);
-             PrintWriter out = new PrintWriter(bw)) {
+        JOptionPane.showMessageDialog(this, "Customer added successfully!");
+        this.dispose(); // close form
+    
 
-            out.println(userId + " | " + username + " | " + name + " | " + email + " | " + 
-                        password + " | " + role + " | " + dob + " | " + contact);
-
-            JOptionPane.showMessageDialog(this, "Customer added successfully! UserID: " + userId);
-
-            jTextField1.setText("");
-            jTextField2.setText("");
-            jTextField3.setText("");
-            jTextField4.setText("");
-            jTextField5.setText("");
-            jTextField6.setText("");
-            jTextField7.setText("");
-
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage(),
-                                          "File Error", JOptionPane.ERROR_MESSAGE);
-        }                                  
+//        String username = jTextField1.getText().trim();
+//        String name = jTextField2.getText().trim();
+//        String email = jTextField3.getText().trim();
+//        String password = jTextField4.getText().trim();
+//        // role field is ignored and auto-assigned to 'customer'
+//        String dob = jTextField6.getText().trim();
+//        String phone = jTextField7.getText().trim();
+//        String nric = jTextField8.getText().trim();
+//
+//        if (username.isEmpty() || name.isEmpty() || email.isEmpty() ||
+//            password.isEmpty() || dob.isEmpty() || phone.isEmpty() || nric.isEmpty()) {
+//            JOptionPane.showMessageDialog(this, "All fields must be filled!", "Error", JOptionPane.ERROR_MESSAGE);
+//            return;
+//        }
+//
+//        List<User> users = User.loadUsers("User.txt");
+//        String userId = User.generateNextUserId(users);
+//        String role = "customer"; // always customer
+//        String createdAt = User.getCurrentDateTime();
+//
+//        try (FileWriter fw = new FileWriter("User.txt", true);
+//             BufferedWriter bw = new BufferedWriter(fw);
+//             PrintWriter out = new PrintWriter(bw)) {
+//
+//            out.println(userId + " | " + username + " | " + name + " | " + email + " | " + 
+//                        password + " | " + role + " | " + dob + " | " + phone + " | " + nric + " | " + createdAt);
+//
+//            JOptionPane.showMessageDialog(this, "Customer added successfully! UserID: " + userId);
+//
+//            jTextField1.setText("");
+//            jTextField2.setText("");
+//            jTextField3.setText("");
+//            jTextField4.setText("");
+//            jTextField5.setText("");
+//            jTextField6.setText("");
+//            jTextField7.setText("");
+//            jTextField8.setText("");
+//
+//        } catch (IOException e) {
+//            JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage(),
+//                                          "File Error", JOptionPane.ERROR_MESSAGE);
+//        }
+        
+        //////////////////
+//    String username = jTextField1.getText().trim();
+//    String name = jTextField2.getText().trim();
+//    String email = jTextField3.getText().trim();
+//    String password = jTextField4.getText().trim();
+//    String dob = jTextField6.getText().trim();
+//    String phone = jTextField7.getText().trim();
+//    String nric = jTextField8.getText().trim();
+//
+//    if (username.isEmpty() || name.isEmpty() || email.isEmpty() ||
+//        password.isEmpty() || dob.isEmpty() || phone.isEmpty() || nric.isEmpty()) {
+//        JOptionPane.showMessageDialog(this, "All fields must be filled!", "Error", JOptionPane.ERROR_MESSAGE);
+//        return;
+//    }
+//
+//    List<User> users = User.loadUsers("user.txt");
+//    String userId = User.generateNextUserId(users);
+//    String role = "customer"; // always customer
+//    String createdAt = User.getCurrentDateTime();
+//
+//    try (FileWriter fw = new FileWriter("user.txt", true);
+//         BufferedWriter bw = new BufferedWriter(fw);
+//         PrintWriter out = new PrintWriter(bw)) {
+//
+//        out.println(userId + " | " + username + " | " + name + " | " + email + " | " +
+//                    password + " | " + role + " | " + dob + " | " + phone + " | " + nric + " | " + createdAt);
+//
+//        JOptionPane.showMessageDialog(this, "Customer added successfully! UserID: " + userId);
+//
+//        jTextField1.setText("");
+//        jTextField2.setText("");
+//        jTextField3.setText("");
+//        jTextField4.setText("");
+//        jTextField5.setText(""); // not used
+//        jTextField6.setText("");
+//        jTextField7.setText("");
+//        jTextField8.setText("");
+//
+//    } catch (IOException e) {
+//        JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage(),
+//                                      "File Error", JOptionPane.ERROR_MESSAGE);
+//    }
+////////////////
+//        String username = jTextField1.getText().trim();
+//        String name = jTextField2.getText().trim();
+//        String email = jTextField3.getText().trim();
+//        String password = jTextField4.getText().trim();
+//        String role = jTextField5.getText().trim();
+//        String dob = jTextField6.getText().trim();
+//        String contact = jTextField7.getText().trim();
+//
+//        if (username.isEmpty() || name.isEmpty() || email.isEmpty() ||
+//            password.isEmpty() || role.isEmpty() || dob.isEmpty() || contact.isEmpty()) {
+//            JOptionPane.showMessageDialog(this, "All fields must be filled!", "Error", JOptionPane.ERROR_MESSAGE);
+//            return;
+//        }
+//
+//        String userId = generateUserID();
+//
+////        try (FileWriter fw = new FileWriter("UserData.txt", true);
+//        try (FileWriter fw = new FileWriter("C:\\Users\\TAI KOK WAI\\Documents\\Java Project\\APU-Medical-Centre-AMC\\src\\amc\\group\\pkg9\\UserData.txt",
+//    true);             
+//             BufferedWriter bw = new BufferedWriter(fw);
+//             PrintWriter out = new PrintWriter(bw)) {
+//
+//            out.println(userId + " | " + username + " | " + name + " | " + email + " | " + 
+//                        password + " | " + role + " | " + dob + " | " + contact);
+//
+//            JOptionPane.showMessageDialog(this, "Customer added successfully! UserID: " + userId);
+//
+//            jTextField1.setText("");
+//            jTextField2.setText("");
+//            jTextField3.setText("");
+//            jTextField4.setText("");
+//            jTextField5.setText("");
+//            jTextField6.setText("");
+//            jTextField7.setText("");
+//
+//        } catch (IOException e) {
+//            JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage(),
+//                                          "File Error", JOptionPane.ERROR_MESSAGE);
+//        }                                  
 
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        this.dispose();
+        this.setVisible(false);
+        // return to staff dashboard if possible
+        if (this.loggedInUser != null && !this.loggedInUser.isEmpty()) {
+            new StaffDashboardGUI(this.loggedInUser).setVisible(true);
+        } else {
+            new StaffDashboardGUI(loggedInUser).setVisible(true); // fallback
+}
+//        this.setVisible(false);
+//        new StaffDashboardGUI(loggedInUser).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -253,6 +413,8 @@ public class StaffAddNewCustomerGUI extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {new StaffAddNewCustomerGUI().setVisible(true);
         });
+//        java.awt.EventQueue.invokeLater(() -> {new StaffAddNewCustomerGUI().setVisible(true);
+//        });
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -275,7 +437,7 @@ public class StaffAddNewCustomerGUI extends javax.swing.JFrame {
 //        ex.printStackTrace();
 //    }
 
-    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -287,6 +449,7 @@ public class StaffAddNewCustomerGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
@@ -295,5 +458,6 @@ public class StaffAddNewCustomerGUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextField8;
     // End of variables declaration//GEN-END:variables
 }

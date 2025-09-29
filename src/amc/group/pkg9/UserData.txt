@@ -1,6 +1,0 @@
-UserID | Username | Name | Email | Password | Role | DOB | Contact
-staff001 | johndoe  | John Doe | staff | John Doe | johndoe@gmail.com | password123 | 0123456789 
-staff002 | janedoe | 12345 | staff | Jane Doe | janedoe@gmail.com | 0198765432
-U004 | 1 | 1 | 1 | 1 | 1 | 1 | 1
-U004 | 1 | 1 | 1 | 1 | 11 | 1 | 1
-U004 | 2 | 22 | 222 | 22 | 2 | 2 | 2

@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.*;
 
 public class CustomerHandler implements ICRUDHandler {
-    private final String filePath = "userdata.txt";
+    private final String filePath = "User.txt";
 
     @Override
     public void create(String data) {   // ✅ single String
